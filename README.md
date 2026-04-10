@@ -16,10 +16,6 @@ A modular **OpenSCAD** project designed to generate high-fidelity, 3D-printable 
 ├── build.py               # Python script to compile monolithic .scad files
 ├── core_engine.scad       # The shared logic and math engine (Injected)
 ├── templates/             # Shape-specific UI and geometry definitions
-│   ├── stringart_heart.scad
-│   ├── stringart_hexagon.scad
-│   ├── stringart_rectangle.scad
-│   └── stringart_ellipse.scad
 └── build/                 # Generated final .scad files
 ```
 
