@@ -1,1 +1,62 @@
-# parametric-stringart
+# Parametric String Art Frame Generator
+
+A modular **OpenSCAD** project designed to generate high-fidelity, 3D-printable string art frames. This system uses a shared geometry engine to cast hundreds of microscopic "string" bridges between an outer frame and a central object, creating a complex, ray-like aesthetic.
+
+## 🚀 Features
+* **Modular Templates:** Specific scripts for **Ellipse**, **Rectangle**, **Hexagon**, and **Heart** geometries.
+* **Shared Engine:** A central logic core (`core_engine.scad`) ensures consistent string-casting and boolean logic across all shapes.
+* **Custom SVG Support:** Drop in any `.svg` file to serve as the central anchor for the strings.
+* **Parametric Controls:** Fine-tune frame depth, wall thickness, string density (rows/layers), and convergence offsets via the OpenSCAD Customizer.
+* **3D Print Optimized:** Includes slip-fit tolerances and specialized cradle bases for non-standing shapes like the Heart.
+
+---
+
+## 📂 Project Structure
+```text
+├── build.py               # Python script to compile monolithic .scad files
+├── core_engine.scad       # The shared logic and math engine (Injected)
+├── templates/             # Shape-specific UI and geometry definitions
+│   ├── stringart_heart.scad
+│   ├── stringart_hexagon.scad
+│   ├── stringart_rectangle.scad
+│   └── stringart_ellipse.scad
+└── build/                 # Generated final .scad files
+```
+
+---
+
+## 🛠️ How it Works
+MakerWorld and other Customizer platforms often require a single, monolithic `.scad` file. To maintain clean code, this project uses a **Python build system**:
+
+1. **`core_engine.scad`**: Contains the complex ray-casting math and boolean operations.
+2. **`templates/`**: Contain the user-facing Customizer variables and the specific 2D profiles for each shape.
+3. **`build.py`**: Merges the core engine into each template to produce ready-to-upload files in the `/build` folder.
+
+---
+
+## 📖 Usage Instructions
+
+### 1. Generating the Files
+Ensure you have Python installed, then run the build script:
+```bash
+python build.py
+```
+This will populate the `/build` directory with monolithic scripts.
+
+### 2. Customizing the Model
+Open any file from the `/build` folder in **OpenSCAD**:
+* **Frame Settings:** Adjust height, width (where applicable), and corner radii.
+* **Center Object:** Set `svg_file` to your local path. Adjust `object_scale_percent` to fit the frame.
+* **String Settings:** Increase `strings_per_row` for density or `string_rows` for vertical complexity.
+* **Center Void:** Use the experimental void settings to "hollow out" the chaotic convergence point for a cleaner look.
+
+### 3. Printing Recommendations
+* **Slicer:** Use the **Arachne** wall generator for the best results on thin string bridges.
+* **Layer Height:** **0.2mm** is recommended.
+* **Walls:** Ensure **Detect Thin Walls** is enabled if your strings are thinner than your nozzle diameter.
+* **Bridges:** Fine-tune your "Bridge Flow" settings to prevent the strings from sagging across the inner void.
+
+---
+
+## ⚖️ License
+This project is provided for the maker community. Feel free to modify, remix, and share your prints!
