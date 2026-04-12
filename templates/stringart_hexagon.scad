@@ -74,8 +74,8 @@ $fn = 120;
 // Variables locked from user adjustment.
 string_embed_percent = 50; 
 string_clearance = 0.1; 
-string_width = 0.6; 
-string_height = 0.4;
+string_width = 0.61; 
+string_height = 0.41;
 
 // Mathematically derive the flat-to-flat height based on the point-to-point width
 frame_height = frame_width * sin(60);

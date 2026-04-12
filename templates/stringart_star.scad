@@ -62,8 +62,8 @@ void_height = 20;
 $fn = 120; 
 string_embed_percent = 50; 
 string_clearance = 0.1; 
-string_width = 0.6; 
-string_height = 0.4;
+string_width = 0.61; 
+string_height = 0.41;
 frame_height = frame_width; // Stars are roughly circular in bounds
 
 // --- Execution ---

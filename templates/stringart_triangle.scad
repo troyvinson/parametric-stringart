@@ -72,8 +72,8 @@ void_height = 20; // [1:0.5:200]
 $fn = 120; 
 string_embed_percent = 50; 
 string_clearance = 0.1; 
-string_width = 0.6; 
-string_height = 0.4;
+string_width = 0.61; 
+string_height = 0.41;
 
 // Calculate equilateral height based on circumradius width
 frame_height = (frame_width / 2) * 1.5;

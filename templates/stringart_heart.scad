@@ -74,8 +74,8 @@ $fn = 120;
 // Variables locked from user adjustment.
 string_embed_percent = 50; 
 string_clearance = 0.1; 
-string_width = 0.6; 
-string_height = 0.4;
+string_width = 0.61; 
+string_height = 0.41;
 
 // Lock the width to maintain the traditional 160:140 (8:7) heart ratio
 frame_width = frame_height * (8 / 7);
