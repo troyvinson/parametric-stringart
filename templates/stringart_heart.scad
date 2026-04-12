@@ -20,10 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/* [Export Options] */
-// 1. Select which part to preview or export.
-part_to_render = "All"; // [Frame, Cradle Base, All]
-
 /* [Heart Frame Settings] */
 // 1. The total maximum height of the outer frame (Width is locked to proportion).
 frame_height = 140; // min:100
@@ -81,19 +77,14 @@ string_height = 0.41;
 frame_width = frame_height * (8 / 7);
 
 // --- Execution ---
-if (part_to_render == "Frame") {
-    render_frame();
-} else if (part_to_render == "Cradle Base") {
-    color(frame_color) cradle_base();
-} else if (part_to_render == "All") {
-    render_frame();
-    // Drops the cradle base down to explicitly match the frame's bottom Z-plane
-    translate([0, -frame_height/2 - 40, -frame_depth/2]) color(frame_color) cradle_base();
-}
+render_frame();
 
 module render_frame() {
     union() {
-        color(frame_color) base_frame();
+        color(frame_color) union() {
+            base_frame();
+            integrated_stand();
+        }
         center_shape();
         color(string_color) rays();
     }
@@ -125,32 +116,16 @@ module center_shape_solid() {
     }
 }
 
-// --- CRADLE BASE ---
-module cradle_base() {
-    cradle_w = frame_width * 0.6;
-    // Matches frame depth exactly, unless frame depth drops below 25mm
-    cradle_d = max(frame_depth, 25);
-    cradle_h = 30;
+// --- INTEGRATED STAND ---
+module integrated_stand() {
+    stand_w = frame_width * 0.4;
+    stand_h = 12;
+    overlap = 5;
 
-    difference() {
-        // Base block: Extrudes a 2D profile along the Y-axis to keep front/back faces completely flat
-        safe_r = 5;
-        rotate([90, 0, 0])
-            linear_extrude(height=cradle_d, center=true)
-                hull() {
-                    // Bottom flat footprint
-                    translate([0, 0.5]) square([cradle_w, 1], center=true);
-                    // Top rounded left/right edges
-                    translate([-cradle_w/2 + safe_r, cradle_h - safe_r]) circle(r=safe_r);
-                    translate([ cradle_w/2 - safe_r, cradle_h - safe_r]) circle(r=safe_r);
-                }
-        
-        // Sinks the heart deep into the block, leaving exactly 10mm of plastic underneath
-        translate([0, 0, 10 + frame_height/2])
-            rotate([90, 0, 0])
-                // Ensure the cut geometry always completely breaches the front and back of the cradle block
-                linear_extrude(height=cradle_d + 2, center=true)
-                    offset(delta=0.5) // 0.5mm tolerance for drop-in fit
-                        outer_profile();
-    }
+    translate([0, -frame_height/2 - stand_h + overlap, 0])
+        linear_extrude(height=frame_depth, center=true)
+            hull() {
+                translate([0, 2]) square([stand_w, 4], center=true);
+                translate([0, stand_h - 2]) square([stand_w * 0.5, 4], center=true);
+            }
 }
