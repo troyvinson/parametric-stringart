@@ -45,6 +45,7 @@ object_offset_x = 0; // [-50:0.5:50]
 object_offset_y = 0; // [-50:0.5:50]
 // 5. Color of the central SVG object
 object_color = "#CCCCCC"; // color
+ // color
 
 /* [String (Ray) Settings] */
 // 1. Number of strings wrapping around one full revolution.
@@ -59,13 +60,14 @@ convergence_y_offset = 0;
 alternate_rotation = true; // [true:false]
 // 6. Color of the strings/rays
 string_color = "#CCCCCC"; // color
+ // color
 
 /* [Center Void (Experimental)] */
-// 1. Removes the chaotic center convergence point. 
+// 1. Removes the chaotic center convergence point. Recommended if your SVG is a hollow ring.
 void_shape = "None"; // [None, Ellipse, Rectangle, Hexagon, Heart]
-// 2. Width of the center string cut.
+// 2. Width of the center string cut. Make this slightly smaller than the inner hole of your SVG.
 void_width = 20; // [1:0.5:200]
-// 3. Height of the center string cut.
+// 3. Height of the center string cut (Only applies to Ellipse, Rectangle, and Heart).
 void_height = 20; // [1:0.5:200]
 
 /* [Hidden] */
@@ -114,18 +116,3 @@ module inner_profile() {
     } 
 }
 
-module center_shape_solid() {
-    scale_factor = (object_scale_percent / 100);
-    translate([object_offset_x, object_offset_y, 0]) {
-        color(object_color)
-            linear_extrude(height=frame_depth, center=true) {
-                scale([scale_factor, scale_factor]) {
-                    if (svg_file == "default.svg" || svg_file == "") {
-                        circle(d=35, $fn=3);
-                    } else {
-                        import(file=svg_file, center=true);
-                    }
-                }
-            }
-    }
-}

@@ -47,6 +47,7 @@ object_offset_x = 0; // [-50:0.5:50]
 object_offset_y = 0; // [-50:0.5:50]
 // 5. Color of the central SVG object
 object_color = "#CCCCCC"; // color
+ // color
 
 /* [String (Ray) Settings] */
 // 1. Number of strings wrapping around one full revolution.
@@ -61,6 +62,7 @@ convergence_y_offset = 0;
 alternate_rotation = true; // [true:false]
 // 6. Color of the strings/rays
 string_color = "#CCCCCC"; // color
+ // color
 
 /* [Center Void (Experimental)] */
 // 1. Removes the chaotic center convergence point. Recommended if your SVG is a hollow ring.
@@ -114,25 +116,3 @@ module inner_profile() {
     } 
 }
 
-module center_shape_solid() {
-    scale_factor = (object_scale_percent / 100);
-    translate([object_offset_x, object_offset_y, 0]) {
-        color(object_color)
-            linear_extrude(height=frame_depth, center=true) {
-                scale([scale_factor, scale_factor]) {
-                    if (svg_file == "default.svg" || svg_file == "") {
-                        // Placeholder Square with matching fillet
-                        ph_size = 35;
-                        ph_safe_r = min(inner_corner_radius, ph_size/2.1);
-                        if (ph_safe_r > 0) {
-                            offset(r=ph_safe_r) offset(r=-ph_safe_r) square([ph_size, ph_size], center=true);
-                        } else {
-                            square([ph_size, ph_size], center=true);
-                        }
-                    } else {
-                        import(file=svg_file, center=true);
-                    }
-                }
-            }
-    }
-}

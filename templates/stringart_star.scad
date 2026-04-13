@@ -39,24 +39,38 @@ inner_corner_radius = 3; // [0:1:20]
 frame_color = "#CCCCCC"; // color
 
 /* [Center Object] */
+// 1. Upload your custom SVG artwork.
 svg_file = "default.svg";
-object_scale_percent = 100;
-object_offset_x = 0;
-object_offset_y = 0;
-object_color = "#CCCCCC";
+// 2. Adjust scale to fit inside the frame (preserves aspect ratio).
+object_scale_percent = 100; // [1:1:500]
+// 3. Fine-tune positioning if the auto-center needs a slight nudge on the X-axis.
+object_offset_x = 0; // [-50:0.5:50]
+// 4. Fine-tune positioning if the auto-center needs a slight nudge on the Y-axis.
+object_offset_y = 0; // [-50:0.5:50]
+// 5. Color of the central SVG object
+object_color = "#CCCCCC"; // color
 
 /* [String (Ray) Settings] */
+// 1. Number of strings wrapping around one full revolution.
 strings_per_row = 28;
+// 2. Number of vertical layers of strings.
 string_rows = 5;
-string_margin = 4;
+// 3. Z-axis margin to keep strings away from top and bottom frame faces.
+string_margin = 4; // [0:0.5:10]
+// 4. Shifts the convergence point of all strings up or down.
 convergence_y_offset = 0; 
-alternate_rotation = true;
-string_color = "#CCCCCC";
+// 5. Offset the angle of every other row for a woven look.
+alternate_rotation = true; // [true:false]
+// 6. Color of the strings/rays
+string_color = "#CCCCCC"; // color
 
-/* [Center Void] */
-void_shape = "None"; 
-void_width = 20;
-void_height = 20;
+/* [Center Void (Experimental)] */
+// 1. Removes the chaotic center convergence point. Recommended if your SVG is a hollow ring.
+void_shape = "None"; // [None, Ellipse, Rectangle, Hexagon, Heart]
+// 2. Width of the center string cut. Make this slightly smaller than the inner hole of your SVG.
+void_width = 20; // [1:0.5:200]
+// 3. Height of the center string cut (Only applies to Ellipse, Rectangle, and Heart).
+void_height = 20; // [1:0.5:200]
 
 /* [Hidden] */
 $fn = 120; 
@@ -114,18 +128,3 @@ module inner_profile() {
     } 
 }
 
-module center_shape_solid() {
-    scale_factor = (object_scale_percent / 100);
-    translate([object_offset_x, object_offset_y, 0]) {
-        color(object_color)
-            linear_extrude(height=frame_depth, center=true) {
-                scale([scale_factor, scale_factor]) {
-                    if (svg_file == "default.svg" || svg_file == "") {
-                        star_polygon(40, star_points, inner_radius_ratio);
-                    } else {
-                        import(file=svg_file, center=true);
-                    }
-                }
-            }
-    }
-}
