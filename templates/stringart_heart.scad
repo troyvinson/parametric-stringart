@@ -121,9 +121,11 @@ module integrated_stand() {
     stand_w = frame_width * 0.4;
     stand_h = 12;
     overlap = 5;
+    corner_r = 3;
 
     translate([0, -frame_height/2 - stand_h + overlap, 0])
         linear_extrude(height=frame_depth, center=true)
+            offset(r=corner_r) offset(delta=-corner_r)
             hull() {
                 translate([0, 2]) square([stand_w, 4], center=true);
                 translate([0, stand_h - 2]) square([stand_w * 0.5, 4], center=true);
