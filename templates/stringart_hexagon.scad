@@ -116,25 +116,3 @@ module inner_profile() {
     } 
 }
 
-module center_shape_solid() {
-    scale_factor = (object_scale_percent / 100);
-    translate([object_offset_x, object_offset_y, 0]) {
-        color(object_color)
-            linear_extrude(height=frame_depth, center=true) {
-                scale([scale_factor, scale_factor]) {
-                    if (svg_file == "default.svg" || svg_file == "") {
-                        ph_size = 40;
-                        ph_safe_r = min(inner_corner_radius, ph_size/2.1);
-                        
-                        if (ph_safe_r > 0) {
-                            offset(r=ph_safe_r) offset(r=-ph_safe_r) circle(d=ph_size, $fn=6);
-                        } else {
-                            circle(d=ph_size, $fn=6);
-                        }
-                    } else {
-                        import(file=svg_file, center=true);
-                    }
-                }
-            }
-    }
-}

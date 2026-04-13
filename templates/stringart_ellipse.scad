@@ -127,21 +127,3 @@ module inner_profile() {
     } 
 }
 
-module center_shape_solid() {
-    actual_cutoff = flatten_ellipse_bottom ? flat_bottom_cutoff : 0;
-    y_shift = actual_cutoff / 2;
-    scale_factor = (object_scale_percent / 100);
-
-    translate([object_offset_x, object_offset_y + y_shift, 0]) {
-        color(object_color)
-            linear_extrude(height=frame_depth, center=true) {
-                scale([scale_factor, scale_factor]) {
-                    if (svg_file == "default.svg" || svg_file == "") {
-                        circle(d=35);
-                    } else {
-                        import(file=svg_file, center=true);
-                    }
-                }
-            }
-    }
-}
