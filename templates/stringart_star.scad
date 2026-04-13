@@ -22,7 +22,7 @@
 
 /* [Star Frame Settings] */
 // 1. The total outer diameter of the star.
-frame_width = 160; // min:100
+frame_width = 180; // min:100
 // 2. How many points the star has.
 star_points = 5; // [5:1:8]
 // 3. How deep the valleys of the star go (0.2 = very pointy, 0.8 = almost a circle).
@@ -30,11 +30,11 @@ inner_radius_ratio = 0.4; // [0.1:0.05:0.9]
 // 4. The thickness of the model (Z-axis).
 frame_depth = 30; // 
 // 5. The thickness of the frame wall.
-frame_thickness = 10;
+frame_thickness = 8;
 // 6. Corner rounding.
-outer_corner_radius = 3; // [0:1:20]
+outer_corner_radius = 2; // [0:1:20]
 // 7. Interior valley rounding.
-inner_corner_radius = 3; // [0:1:20]
+inner_corner_radius = 1; // [0:1:20]
 // 8. Color
 frame_color = "#CCCCCC"; // color
 
