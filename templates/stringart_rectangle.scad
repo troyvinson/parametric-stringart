@@ -79,6 +79,8 @@ string_clearance = 0.1;
 string_width = 0.61; 
 string_height = 0.41;
 
+center_mode = "svg";
+
 // --- Execution ---
 union() {
     color(frame_color) base_frame();
@@ -114,3 +116,5 @@ module inner_profile() {
     } 
 }
 
+
+include <../core_engine.scad>

@@ -139,28 +139,75 @@ module rays() {
 
 module center_shape_solid() {
     scale_factor = (object_scale_percent / 100);
+
+    // Check if mode is defined, default to "svg"
+    is_text_mode = is_undef(center_mode) ? false : (center_mode == "text");
+
     translate([object_offset_x, object_offset_y, 0]) {
-        if (svg_file == "default.svg" || svg_file == "") {
-            // Placeholder Cylinder
-            color("gray")
-                linear_extrude(height=frame_depth, center=true)
-                    circle(d=40);
-            
-            // Raised Black Text
-            color("black")
-                translate([0, 0, frame_depth/2])
-                    linear_extrude(height=1) {
-                        translate([0, 5, 0])
-                            text("Upload", size=6, font="Arial:style=Bold", halign="center", valign="center");
-                        translate([0, -3, 0])
-                            text("SVG File", size=6, font="Arial:style=Bold", halign="center", valign="center");
+        if (is_text_mode) {
+            scale([scale_factor, scale_factor]) {
+                if (text_emboss_height >= 0) {
+                    // Emboss (positive or zero)
+                    union() {
+                        // Outline Base (solid)
+                        color(text_outline_color)
+                            linear_extrude(height=frame_depth, center=true)
+                                offset(r=text_outline_width)
+                                    text(text_string, size=text_size, font=text_font, halign="center", valign="center", spacing=text_spacing);
+
+                        // Raised Text
+                        color(text_color)
+                            translate([0, 0, frame_depth/2])
+                                linear_extrude(height=text_emboss_height)
+                                    text(text_string, size=text_size, font=text_font, halign="center", valign="center", spacing=text_spacing);
                     }
+                } else {
+                    // Deboss (negative)
+                    difference() {
+                        // Outline Base (solid)
+                        color(text_outline_color)
+                            linear_extrude(height=frame_depth, center=true)
+                                offset(r=text_outline_width)
+                                    text(text_string, size=text_size, font=text_font, halign="center", valign="center", spacing=text_spacing);
+
+                        // Subtracted Text
+                        translate([0, 0, frame_depth/2 + text_emboss_height])
+                            linear_extrude(height=abs(text_emboss_height) + 1) // +1 for clean cut
+                                text(text_string, size=text_size, font=text_font, halign="center", valign="center", spacing=text_spacing);
+                    }
+                    // Add the bottom of the debossed area in the text color if desired,
+                    // but for deboss usually we just cut into it. If we want it colored:
+                    // Actually, let's keep it simple and just do difference.
+                    // If they want colored text, we could fill the cut or color the cut faces,
+                    // OpenSCAD coloring in differences can be tricky. Let's just difference.
+                    color(text_color)
+                        translate([0, 0, frame_depth/2 + text_emboss_height])
+                            linear_extrude(height=0.01) // Just a thin layer to provide color at the bottom of the deboss
+                                text(text_string, size=text_size, font=text_font, halign="center", valign="center", spacing=text_spacing);
+                }
+            }
         } else {
-            // Uploaded SVG
-            linear_extrude(height=frame_depth, center=true) {
-                scale_factor = (object_scale_percent / 100);
-                scale([scale_factor, scale_factor]) {
-                    import(file=svg_file, center=true);
+            if (is_undef(svg_file) || svg_file == "default.svg" || svg_file == "") {
+                // Placeholder Cylinder
+                color("gray")
+                    linear_extrude(height=frame_depth, center=true)
+                        circle(d=40);
+
+                // Raised Black Text
+                color("black")
+                    translate([0, 0, frame_depth/2])
+                        linear_extrude(height=1) {
+                            translate([0, 5, 0])
+                                text("Upload", size=6, font="Arial:style=Bold", halign="center", valign="center");
+                            translate([0, -3, 0])
+                                text("SVG File", size=6, font="Arial:style=Bold", halign="center", valign="center");
+                        }
+            } else {
+                // Uploaded SVG
+                linear_extrude(height=frame_depth, center=true) {
+                    scale([scale_factor, scale_factor]) {
+                        import(file=svg_file, center=true);
+                    }
                 }
             }
         }

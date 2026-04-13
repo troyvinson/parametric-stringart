@@ -80,6 +80,8 @@ string_width = 0.61;
 string_height = 0.41;
 frame_height = frame_width; // Stars are roughly circular in bounds
 
+center_mode = "svg";
+
 // --- Execution ---
 union() {
     color(frame_color) base_frame();
@@ -128,3 +130,5 @@ module inner_profile() {
     } 
 }
 
+
+include <../core_engine.scad>

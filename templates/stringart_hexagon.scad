@@ -80,6 +80,8 @@ string_height = 0.41;
 // Mathematically derive the flat-to-flat height based on the point-to-point width
 frame_height = frame_width * sin(60);
 
+center_mode = "svg";
+
 // --- Execution ---
 union() {
     color(frame_color) base_frame();
@@ -116,3 +118,5 @@ module inner_profile() {
     } 
 }
 
+
+include <../core_engine.scad>
