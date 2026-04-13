@@ -118,10 +118,10 @@ module center_shape_solid() {
 
 // --- INTEGRATED STAND ---
 module integrated_stand() {
-    stand_w = frame_width * 0.4;
+    stand_w = frame_width * 0.7;
     stand_h = 12;
-    overlap = 5;
-    corner_r = 3;
+    overlap = 4;
+    corner_r = 2;
 
     translate([0, -frame_height/2 - stand_h + overlap, 0])
         linear_extrude(height=frame_depth, center=true)
