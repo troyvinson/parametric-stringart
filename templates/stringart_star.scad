@@ -114,18 +114,3 @@ module inner_profile() {
     } 
 }
 
-module center_shape_solid() {
-    scale_factor = (object_scale_percent / 100);
-    translate([object_offset_x, object_offset_y, 0]) {
-        color(object_color)
-            linear_extrude(height=frame_depth, center=true) {
-                scale([scale_factor, scale_factor]) {
-                    if (svg_file == "default.svg" || svg_file == "") {
-                        star_polygon(40, star_points, inner_radius_ratio);
-                    } else {
-                        import(file=svg_file, center=true);
-                    }
-                }
-            }
-    }
-}

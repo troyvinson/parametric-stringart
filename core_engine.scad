@@ -125,3 +125,24 @@ module center_shape() {
 module rays() {
     bounded_string_pattern(string_width, string_height);
 }
+module center_shape_solid() {
+    scale_factor = (object_scale_percent / 100);
+    translate([object_offset_x, object_offset_y, 0]) {
+        if (svg_file == "default.svg" || svg_file == "") {
+            union() {
+                color(object_color)
+                    linear_extrude(height=frame_depth, center=true)
+                        square([80, 20], center=true);
+                color("black")
+                    translate([0, 0, frame_depth/2])
+                        linear_extrude(height=2, center=false)
+                            text("Upload SVG File", size=8, halign="center", valign="center");
+            }
+        } else {
+            color(object_color)
+                linear_extrude(height=frame_depth, center=true)
+                    scale([scale_factor, scale_factor])
+                        import(file=svg_file, center=true);
+        }
+    }
+}

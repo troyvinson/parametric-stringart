@@ -100,22 +100,6 @@ module inner_profile() {
     offset(delta=-frame_thickness) outer_profile();
 }
 
-module center_shape_solid() {
-    scale_factor = (object_scale_percent / 100);
-    translate([object_offset_x, object_offset_y, 0]) {
-        color(object_color)
-            linear_extrude(height=frame_depth, center=true) {
-                scale([scale_factor, scale_factor]) {
-                    if (svg_file == "default.svg" || svg_file == "") {
-                        filleted_heart(60, 52.5);
-                    } else {
-                        import(file=svg_file, center=true);
-                    }
-                }
-            }
-    }
-}
-
 // --- INTEGRATED STAND ---
 module integrated_stand() {
     stand_w = frame_width * 0.7;
@@ -131,3 +115,4 @@ module integrated_stand() {
                 translate([0, stand_h - 2]) square([stand_w * 0.5, 4], center=true);
             }
 }
+
