@@ -22,7 +22,7 @@
 
 /* [Triangle Frame Settings] */
 // 1. The total point-to-point width of the outer frame.
-frame_width = 160; // min:100
+frame_width = 180; // min:100
 // 2. The thickness of the model from the build plate up (Z-axis).
 frame_depth = 30; //
 // 3. The thickness of the outer frame wall itself.
@@ -36,15 +36,15 @@ frame_color = "#CCCCCC"; // color
 
 /* [Text Settings] */
 // 1. Text to display
-text_string = "Troy";
+text_string = "Text";
 // 2. Font to use
 text_font = "Arial:style=Bold";
 // 3. Size of the text
-text_size = 20; // [5:1:100]
+text_size = 18; // [5:1:100]
 // 4. Letter spacing
 text_spacing = 1; // [0.1:0.1:5]
 // 5. Width of the solid outline around the text
-text_outline_width = 3; // [0:0.5:20]
+text_outline_width = 4; // [0:0.5:20]
 // 6. Height the text protrudes above the outline (use negative for debossing)
 text_emboss_height = 2; // [-10:0.5:20]
 // 7. Adjust scale to fit inside the frame (preserves aspect ratio)
@@ -52,20 +52,20 @@ object_scale_percent = 100; // [1:1:500]
 // 8. Fine-tune positioning if the auto-center needs a slight nudge on the X-axis
 object_offset_x = 0; // [-50:0.5:50]
 // 9. Fine-tune positioning if the auto-center needs a slight nudge on the Y-axis
-object_offset_y = 0; // [-50:0.5:50]
+object_offset_y = -5; // [-50:0.5:50]
 // 10. Color of the text outline base
 text_outline_color = "#FFFFFF"; // color
 // 11. Color of the embossed/debossed text
 text_color = "#FF0000"; // color
 /* [String (Ray) Settings] */
 // 1. Number of strings wrapping around one full revolution.
-strings_per_row = 28;
+strings_per_row = 24;
 // 2. Number of vertical layers of strings.
 string_rows = 5;
 // 3. Z-axis margin to keep strings away from top and bottom frame faces.
 string_margin = 4; // [0:0.5:10]
 // 4. Shifts the convergence point of all strings up or down.
-convergence_y_offset = 0;
+convergence_y_offset = -5;
 // 5. Offset the angle of every other row for a woven look.
 alternate_rotation = true; // [true:false]
 // 6. Color of the strings/rays

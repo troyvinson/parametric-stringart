@@ -36,7 +36,7 @@ frame_color = "#CCCCCC"; // color
 
 /* [Text Settings] */
 // 1. Text to display
-text_string = "Troy";
+text_string = "Text";
 // 2. Font to use
 text_font = "Arial:style=Bold";
 // 3. Size of the text

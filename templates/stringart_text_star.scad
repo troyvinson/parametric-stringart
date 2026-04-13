@@ -40,15 +40,15 @@ frame_color = "#CCCCCC"; // color
 
 /* [Text Settings] */
 // 1. Text to display
-text_string = "Troy";
+text_string = "Text";
 // 2. Font to use
 text_font = "Arial:style=Bold";
 // 3. Size of the text
-text_size = 20; // [5:1:100]
+text_size = 16; // [5:1:100]
 // 4. Letter spacing
 text_spacing = 1; // [0.1:0.1:5]
 // 5. Width of the solid outline around the text
-text_outline_width = 3; // [0:0.5:20]
+text_outline_width = 4; // [0:0.5:20]
 // 6. Height the text protrudes above the outline (use negative for debossing)
 text_emboss_height = 2; // [-10:0.5:20]
 // 7. Adjust scale to fit inside the frame (preserves aspect ratio)
