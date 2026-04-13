@@ -66,35 +66,38 @@ module raw_string_pattern(w, h) {
     }
 }
 
-module string_boundary() {
+module string_boundary(l_clearance = 0) {
     linear_extrude(height=frame_depth + 2, center=true)
-        offset(delta=-frame_thickness * (1 - (string_embed_percent/100))) outer_profile();
+        offset(delta=(-frame_thickness * (1 - (string_embed_percent/100))) + l_clearance) outer_profile();
 }
 
-module string_void() {
+module string_void(l_clearance = 0) {
     translate([0, convergence_y_offset, 0])
         linear_extrude(height=frame_depth * 3, center=true) {
-            if (void_shape == "Ellipse") {
-                scale([void_width/void_height, 1])
-                    circle(d=void_height);
-            } else if (void_shape == "Rectangle") {
-                square([void_width, void_height], center=true);
-            } else if (void_shape == "Hexagon") {
-                circle(d=void_width, $fn=6);
-            } else if (void_shape == "Heart") {
-                filleted_heart(void_width, void_height);
+            // Shrink the void by the clearance amount to let the string cut deeper
+            offset(delta=-l_clearance) {
+                if (void_shape == "Ellipse") {
+                    scale([void_width/void_height, 1])
+                        circle(d=void_height);
+                } else if (void_shape == "Rectangle") {
+                    square([void_width, void_height], center=true);
+                } else if (void_shape == "Hexagon") {
+                    circle(d=void_width, $fn=6);
+                } else if (void_shape == "Heart") {
+                    filleted_heart(void_width, void_height);
+                }
             }
         }
 }
 
-module bounded_string_pattern(w, h) {
+module bounded_string_pattern(w, h, l_clearance = 0) {
     difference() {
         intersection() {
-            string_boundary();
+            string_boundary(l_clearance);
             raw_string_pattern(w, h);
         }
         if (void_shape != "None") {
-            string_void();
+            string_void(l_clearance);
         }
     }
 }
@@ -108,8 +111,12 @@ module base_frame() {
             } 
         }
         if (string_clearance > 0) {
-            bounded_string_pattern(string_width + (string_clearance * 2), string_height + (string_clearance * 2));
-        } 
+            bounded_string_pattern(
+                string_width + (string_clearance * 2), 
+                string_height + (string_clearance * 2), 
+                string_clearance
+            );
+        }
     }
 }
 
@@ -117,32 +124,45 @@ module center_shape() {
     difference() {
         center_shape_solid();
         if (string_clearance > 0) {
-            bounded_string_pattern(string_width + (string_clearance * 2), string_height + (string_clearance * 2));
-        } 
+            bounded_string_pattern(
+                string_width + (string_clearance * 2), 
+                string_height + (string_clearance * 2), 
+                string_clearance
+            );
+        }
     }
 }
 
 module rays() {
     bounded_string_pattern(string_width, string_height);
 }
+
 module center_shape_solid() {
     scale_factor = (object_scale_percent / 100);
     translate([object_offset_x, object_offset_y, 0]) {
         if (svg_file == "default.svg" || svg_file == "") {
-            union() {
-                color(object_color)
-                    linear_extrude(height=frame_depth, center=true)
-                        square([80, 20], center=true);
-                color("black")
-                    translate([0, 0, frame_depth/2])
-                        linear_extrude(height=2, center=false)
-                            text("Upload SVG File", size=8, halign="center", valign="center");
-            }
-        } else {
-            color(object_color)
+            // Placeholder Cylinder
+            color("gray")
                 linear_extrude(height=frame_depth, center=true)
-                    scale([scale_factor, scale_factor])
-                        import(file=svg_file, center=true);
+                    circle(d=40);
+            
+            // Raised Black Text
+            color("black")
+                translate([0, 0, frame_depth/2])
+                    linear_extrude(height=1) {
+                        translate([0, 5, 0])
+                            text("Upload", size=6, font="Arial:style=Bold", halign="center", valign="center");
+                        translate([0, -3, 0])
+                            text("SVG File", size=6, font="Arial:style=Bold", halign="center", valign="center");
+                    }
+        } else {
+            // Uploaded SVG
+            linear_extrude(height=frame_depth, center=true) {
+                scale_factor = (object_scale_percent / 100);
+                scale([scale_factor, scale_factor]) {
+                    import(file=svg_file, center=true);
+                }
+            }
         }
     }
 }
