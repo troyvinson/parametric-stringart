@@ -34,30 +34,32 @@ frame_color = "#CCCCCC"; // color
 // 1. Text to display
 text_string = "Troy";
 // 2. Select font to use
-font = "Roboto"; //[Aclonica, Acme, Agbalumo, Aladin, Alkatra,Amaranth,Artifika,Bagel Fat One,Bree Serif,Cabin,Cal Sans,Caprasimo,Carter One,Chewy,Chicle,Comic Relief,Concert One,Creepster,Dangrek,Gabriela,Galada,Goblin One,Imprima,Irish Grover,Itim,Jolly Lodger,Lemon,Lilita One,Lobster,Lobster Two,Lora,Merriweather Sans,Montserrat,Moul,Orelega One,Pacifico,Paprika,Quando,Radio Canada,REM,Righteous,Risque,Roboto,Roboto Condensed,Roboto Flex,Roboto Mono,Roboto Serif,Roboto Slab,Rum Raisin,Salsa,Seymour One,Slackey,Sniglet,Spicy Rice,Sriracha,Suez One,Telex,Tilt Neon,Tilt Warp,Titan One,Ubuntu,Ubuntu Sans,Ultra,Wendy One,Young Serif]
+font = "Roboto"; //[Aclonica, Acme, Agbalumo, Aladin, Alkatra,Amaranth,Artifika,Bagel Fat One,Bree Serif,Cabin,Cal Sans,Caprasimo,Carter One,Chewy,Chicle,Comic Relief,Concert One,Creepster,Dangrek,Gabriela,Galada,Goblin One,Imprima,Irish Grover,Itim,Jolly Lodger,Lemon,Lilita One,Lobster,Lobster Two,Lora,Merriweather Sans,Montserrat,Moul,Noto Emoji,Orelega One,Pacifico,Paprika,Quando,Radio Canada,REM,Righteous,Risque,Roboto,Roboto Condensed,Roboto Flex,Roboto Mono,Roboto Serif,Roboto Slab,Rum Raisin,Salsa,Seymour One,Slackey,Sniglet,Spicy Rice,Sriracha,Suez One,Telex,Tilt Neon,Tilt Warp,Titan One,Ubuntu,Ubuntu Sans,Ultra,Wendy One,Young Serif]
 // 3. Not all styles work with all fonts
 font_style = ""; // [,Regular,Bold,Medium,SemiBold,Light,ExtraBold,Black,ExtraLight,Thin,Bold Italic,Italic,Light Italic,Medium Italic]
 // 4. Prepend Emoji
 prepend_emoji = ""; // [ ,❤,⭐,✨,🔥,🎵,🐾,🌸,🦋,🌙,☀,⚡,🍀,🎀,🎁,🚀,🛸,🏆,👑,💎,💍,💡,🎈,🎉,⚽,🏀,🏈,⚾,🎾,☕,🍺,🍷,🍕,🍔,🍦,🍎,🍄,🌵,🌲,🌊,🌍,🪐]
 // 5. Append Emoji
 append_emoji = ""; // [ ,❤,⭐,✨,🔥,🎵,🐾,🌸,🦋,🌙,☀,⚡,🍀,🎀,🎁,🚀,🛸,🏆,👑,💎,💍,💡,🎈,🎉,⚽,🏀,🏈,⚾,🎾,☕,🍺,🍷,🍕,🍔,🍦,🍎,🍄,🌵,🌲,🌊,🌍,🪐]
-// 6. Size of the text
+// 6. Emoji Spacing (Distance from text)
+emoji_spacing = 20; // [0:1:100]
+// 7. Size of the text
 text_size = 20; // [5:1:100]
-// 7. Letter spacing
+// 8. Letter spacing
 text_spacing = 1; // [0.1:0.1:5]
-// 8. Width of the solid outline around the text
+// 9. Width of the solid outline around the text
 text_outline_width = 3; // [0:0.5:20]
-// 9. Height the text protrudes above the outline (use negative for debossing)
+// 10. Height the text protrudes above the outline (use negative for debossing)
 text_emboss_height = 2; // [-10:0.5:20]
-// 10. Adjust scale to fit inside the frame (preserves aspect ratio)
+// 11. Adjust scale to fit inside the frame (preserves aspect ratio)
 object_scale_percent = 100; // [1:1:500]
-// 12. Fine-tune positioning if the auto-center needs a slight nudge on the X-axis
+// 13. Fine-tune positioning if the auto-center needs a slight nudge on the X-axis
 object_offset_x = 0; // [-50:0.5:50]
-// 12. Fine-tune positioning if the auto-center needs a slight nudge on the Y-axis
+// 13. Fine-tune positioning if the auto-center needs a slight nudge on the Y-axis
 object_offset_y = 0; // [-50:0.5:50]
-// 13. Color of the text outline base
+// 14. Color of the text outline base
 text_outline_color = "#FFFFFF"; // color
-// 14. Color of the embossed/debossed text
+// 15. Color of the embossed/debossed text
 text_color = "#FF0000"; // color
 /* [String (Ray) Settings] */
 // 1. Number of strings wrapping around one full revolution.
