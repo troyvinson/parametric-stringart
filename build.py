@@ -55,6 +55,7 @@ def build_project():
             # Read the unique UI variables and shape definitions
             with open(template_path, 'r') as f:
                 template_code = f.read()
+            template_code = template_code.replace("include <../core_engine.scad>", "")
 
             # Stitch them together
             final_code = f"{template_code}\n\n// === INJECTED CORE ENGINE ===\n\n{core_code}"
