@@ -153,13 +153,13 @@ module center_shape_solid() {
                         color(text_outline_color)
                             linear_extrude(height=frame_depth, center=true)
                                 offset(r=text_outline_width)
-                                    text(text_string, size=text_size, font=text_font, halign="center", valign="center", spacing=text_spacing);
+                                    text(text_string, size=text_size, font=str(font, (font_style == "" ? "" : str(":style=", font_style))), halign="center", valign="center", spacing=text_spacing);
 
                         // Raised Text
                         color(text_color)
                             translate([0, 0, frame_depth/2])
                                 linear_extrude(height=text_emboss_height)
-                                    text(text_string, size=text_size, font=text_font, halign="center", valign="center", spacing=text_spacing);
+                                    text(text_string, size=text_size, font=str(font, (font_style == "" ? "" : str(":style=", font_style))), halign="center", valign="center", spacing=text_spacing);
                     }
                 } else {
                     // Deboss (negative)
@@ -168,12 +168,12 @@ module center_shape_solid() {
                         color(text_outline_color)
                             linear_extrude(height=frame_depth, center=true)
                                 offset(r=text_outline_width)
-                                    text(text_string, size=text_size, font=text_font, halign="center", valign="center", spacing=text_spacing);
+                                    text(text_string, size=text_size, font=str(font, (font_style == "" ? "" : str(":style=", font_style))), halign="center", valign="center", spacing=text_spacing);
 
                         // Subtracted Text
                         translate([0, 0, frame_depth/2 + text_emboss_height])
                             linear_extrude(height=abs(text_emboss_height) + 1) // +1 for clean cut
-                                text(text_string, size=text_size, font=text_font, halign="center", valign="center", spacing=text_spacing);
+                                text(text_string, size=text_size, font=str(font, (font_style == "" ? "" : str(":style=", font_style))), halign="center", valign="center", spacing=text_spacing);
                     }
                     // Add the bottom of the debossed area in the text color if desired,
                     // but for deboss usually we just cut into it. If we want it colored:
@@ -183,7 +183,7 @@ module center_shape_solid() {
                     color(text_color)
                         translate([0, 0, frame_depth/2 + text_emboss_height])
                             linear_extrude(height=0.01) // Just a thin layer to provide color at the bottom of the deboss
-                                text(text_string, size=text_size, font=text_font, halign="center", valign="center", spacing=text_spacing);
+                                text(text_string, size=text_size, font=str(font, (font_style == "" ? "" : str(":style=", font_style))), halign="center", valign="center", spacing=text_spacing);
                 }
             }
         } else {
