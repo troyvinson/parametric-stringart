@@ -33,7 +33,7 @@ def build_project():
 
     # Load the core engine math
     try:
-        with open(CORE_FILE, 'r', encoding='utf-8') as f:
+        with open(CORE_FILE, 'r') as f:
             core_code = f.read()
 
             # Strip out the copyright header from core_code to avoid duplicates
@@ -53,7 +53,7 @@ def build_project():
             output_path = os.path.join(OUTPUT_DIR, f"TinkerTroy_{filename}")
 
             # Read the unique UI variables and shape definitions
-            with open(template_path, 'r', encoding='utf-8') as f:
+            with open(template_path, 'r') as f:
                 template_code = f.read()
             template_code = template_code.replace("include <../core_engine.scad>", "")
 
@@ -61,7 +61,7 @@ def build_project():
             final_code = f"{template_code}\n\n// === INJECTED CORE ENGINE ===\n\n{core_code}"
 
             # Write the monolithic file to the build folder
-            with open(output_path, 'w', encoding='utf-8') as f:
+            with open(output_path, 'w') as f:
                 f.write(final_code)
 
             print(f"Built: {output_path}")
