@@ -40,7 +40,8 @@ python build.py
 This will populate the `/build` directory with monolithic scripts.
 
 ### 2. Customizing the Model
-Open any file from the `/build` folder in **OpenSCAD**:
+1. **Install OpenSCAD:** Download and install [OpenSCAD](https://openscad.org/downloads.html).
+2. Open any file from the `/build` folder in **OpenSCAD**:
 * **Frame Settings:** Adjust height, width (where applicable), and corner radii.
 * **Center Object:** Set `svg_file` to your local path. Adjust `object_scale_percent` to fit the frame.
 * **String Settings:** Increase `strings_per_row` for density or `string_rows` for vertical complexity.
