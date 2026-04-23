@@ -23,8 +23,12 @@ inner_corner_radius = 5; // [0:1:30]
 frame_color = "#CCCCCC"; // color
 
 /* [Text Settings] */
-// 1. Text to display
+// 1. Emoji(s) to display before the text (optional, uses Noto Emoji font)
+text_prefix = "";
+// 2. Main text to display
 text_string = "Test";
+// 3. Emoji(s) to display after the text (optional, uses Noto Emoji font)
+text_suffix = "";
 // 2. Select font to use
 font = "Roboto"; //[Aclonica, Acme, Agbalumo, Aladin, Alkatra,Amaranth,Artifika,Bagel Fat One,Bree Serif,Cabin,Cal Sans,Caprasimo,Carter One,Chewy,Chicle,Comic Relief,Concert One,Creepster,Dangrek,Gabriela,Galada,Goblin One,Imprima,Irish Grover,Itim,Jolly Lodger,Lemon,Lilita One,Lobster,Lobster Two,Lora,Merriweather Sans,Montserrat,Moul,Noto Emoji,Orelega One,Pacifico,Paprika,Quando,Radio Canada,REM,Righteous,Risque,Roboto,Roboto Condensed,Roboto Flex,Roboto Mono,Roboto Serif,Roboto Slab,Rum Raisin,Salsa,Seymour One,Slackey,Sniglet,Spicy Rice,Sriracha,Suez One,Telex,Tilt Neon,Tilt Warp,Titan One,Ubuntu,Ubuntu Sans,Ultra,Wendy One,Young Serif]
 // 3. Not all styles work with all fonts
@@ -52,8 +56,10 @@ text_color = "#FF0000"; // color
 strings_per_row = 28;
 // 2. Number of vertical layers of strings.
 string_rows = 5;
-// 3. Z-axis margin to keep strings away from top and bottom frame faces.
-string_margin = 4; // [0:0.5:10]
+// 3. Z-axis margin to keep strings away from the top face.
+string_margin_top = 4; // [0:0.5:10]
+// 4. Z-axis margin to keep strings away from the bottom face.
+string_margin_bottom = 4; // [0:0.5:10]
 // 4. Shifts the convergence point of all strings up or down.
 convergence_y_offset = 0;
 // 5. Offset the angle of every other row for a woven look.

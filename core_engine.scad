@@ -32,8 +32,10 @@ module filleted_heart(w, h) {
 
 module raw_string_pattern(w, h) {
     ray_length = max(frame_width, frame_height) * 1.5;
-    z_usable = frame_depth - string_height - (string_margin * 2); 
-    z_start = (string_rows == 1) ? 0 : -z_usable/2;
+    z_usable = frame_depth - string_height - string_margin_bottom - string_margin_top;
+    // Bottom row sits just inside the bottom margin; top row just inside the top margin.
+    z_bottom = -frame_depth/2 + string_margin_bottom + string_height/2;
+    z_start = (string_rows == 1) ? z_bottom + z_usable/2 : z_bottom;
     z_step = (string_rows > 1) ? z_usable / (string_rows - 1) : 0; 
 
     union() {
@@ -129,47 +131,99 @@ module center_shape_solid() {
     // Check if mode is defined, default to "svg"
     is_text_mode = is_undef(center_mode) ? false : (center_mode == "text");
 
+    // --- Emoji / text positioning helpers ---
+    // Estimated half-width of the main text block.
+    // When text_string is empty, emojis are centered at x=0.
+    _half_w = (text_string == "") ? 0
+            : (len(text_string) * text_size * text_spacing * 0.6) / 2;
+    _pre_x  = (text_string == "" && text_suffix == "") ? 0 : -(_half_w + text_size * 0.6);
+    _post_x = (text_prefix == "" && text_string == "") ? 0 :  (_half_w + text_size * 0.6);
+
+    _main_font  = str(font, (font_style == "" ? "" : str(":style=", font_style)));
+    _emoji_font = "Noto Emoji";
+
+    // 2D outline shape for a single text segment placed at x_pos
+    module _text_2d(the_text, the_font, x_pos) {
+        translate([x_pos, 0])
+            text(the_text, size=text_size, font=the_font,
+                 halign="center", valign="center", spacing=text_spacing);
+    }
+
+    // Rendered strings: add trailing space to prefix when something follows,
+    // and leading space to suffix when something precedes it.
+    _pre_has_neighbor  = (text_string != "" || text_suffix != "");
+    _post_has_neighbor = (text_string != "" || text_prefix != "");
+    _pre_rendered  = (text_prefix != "" && _pre_has_neighbor)  ? str(text_prefix, " ") : text_prefix;
+    _post_rendered = (text_suffix != "" && _post_has_neighbor) ? str(" ", text_suffix)  : text_suffix;
+
+    // Union of all three text segments as a 2D shape (for outline base extrusion)
+    module _all_text_2d_outlined() {
+        offset(r=text_outline_width) {
+            if (text_prefix != "") _text_2d(_pre_rendered,  _emoji_font, _pre_x);
+            if (text_string != "") _text_2d(text_string,    _main_font,  0);
+            if (text_suffix != "") _text_2d(_post_rendered, _emoji_font, _post_x);
+        }
+    }
+
+    // Union of all three text segments as a 2D shape (raw, for emboss/deboss cutting)
+    module _all_text_2d_raw() {
+        if (text_prefix != "") _text_2d(_pre_rendered,  _emoji_font, _pre_x);
+        if (text_string != "") _text_2d(text_string,    _main_font,  0);
+        if (text_suffix != "") _text_2d(_post_rendered, _emoji_font, _post_x);
+    }
+
     translate([object_offset_x, object_offset_y, 0]) {
         if (is_text_mode) {
             scale([scale_factor, scale_factor]) {
-                if (text_emboss_height >= 0) {
-                    // Emboss (positive or zero)
+                if (text_emboss_height > 0) {
+                    // Emboss (positive) — raised text sits above the top face
                     union() {
                         // Outline Base (solid)
                         color(text_outline_color)
                             linear_extrude(height=frame_depth, center=true)
-                                offset(r=text_outline_width)
-                                    text(text_string, size=text_size, font=str(font, (font_style == "" ? "" : str(":style=", font_style))), halign="center", valign="center", spacing=text_spacing);
+                                _all_text_2d_outlined();
 
                         // Raised Text
                         color(text_color)
                             translate([0, 0, frame_depth/2])
                                 linear_extrude(height=text_emboss_height)
-                                    text(text_string, size=text_size, font=str(font, (font_style == "" ? "" : str(":style=", font_style))), halign="center", valign="center", spacing=text_spacing);
+                                    _all_text_2d_raw();
                     }
-                } else {
-                    // Deboss (negative)
-                    difference() {
+                } else if (text_emboss_height == 0) {
+                    // Flat — 1.2mm slab downward from the top face
+                    union() {
                         // Outline Base (solid)
                         color(text_outline_color)
                             linear_extrude(height=frame_depth, center=true)
-                                offset(r=text_outline_width)
-                                    text(text_string, size=text_size, font=str(font, (font_style == "" ? "" : str(":style=", font_style))), halign="center", valign="center", spacing=text_spacing);
+                                _all_text_2d_outlined();
 
-                        // Subtracted Text
-                        translate([0, 0, frame_depth/2 + text_emboss_height])
-                            linear_extrude(height=abs(text_emboss_height) + 1) // +1 for clean cut
-                                text(text_string, size=text_size, font=str(font, (font_style == "" ? "" : str(":style=", font_style))), halign="center", valign="center", spacing=text_spacing);
+                        // 1.2mm slab going downward from the top face
+                        color(text_color)
+                            translate([0, 0, frame_depth/2 - 1.2])
+                                linear_extrude(height=1.2)
+                                    _all_text_2d_raw();
                     }
-                    // Add the bottom of the debossed area in the text color if desired,
-                    // but for deboss usually we just cut into it. If we want it colored:
-                    // Actually, let's keep it simple and just do difference.
-                    // If they want colored text, we could fill the cut or color the cut faces,
-                    // OpenSCAD coloring in differences can be tricky. Let's just difference.
-                    color(text_color)
-                        translate([0, 0, frame_depth/2 + text_emboss_height])
-                            linear_extrude(height=0.01) // Just a thin layer to provide color at the bottom of the deboss
-                                text(text_string, size=text_size, font=str(font, (font_style == "" ? "" : str(":style=", font_style))), halign="center", valign="center", spacing=text_spacing);
+                } else {
+                    // Deboss (negative) — cavity cut + 1.2mm colored slab below cavity floor
+                    union() {
+                        difference() {
+                            // Outline Base (solid)
+                            color(text_outline_color)
+                                linear_extrude(height=frame_depth, center=true)
+                                    _all_text_2d_outlined();
+
+                            // Subtracted Text cavity
+                            translate([0, 0, frame_depth/2 + text_emboss_height])
+                                linear_extrude(height=abs(text_emboss_height) + 1) // +1 for clean cut
+                                    _all_text_2d_raw();
+                        }
+
+                        // 1.2mm colored slab extending downward from the cavity floor
+                        color(text_color)
+                            translate([0, 0, frame_depth/2 + text_emboss_height - 1.2])
+                                linear_extrude(height=1.2)
+                                    _all_text_2d_raw();
+                    }
                 }
             }
         } else {

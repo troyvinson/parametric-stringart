@@ -41,8 +41,10 @@ object_color = "#CCCCCC"; // color
 strings_per_row = 28;
 // 2. Number of vertical layers of strings.
 string_rows = 5;
-// 3. Z-axis margin to keep strings away from top and bottom frame faces.
-string_margin = 4; // [0:0.5:10]
+// 3. Z-axis margin to keep strings away from the top face.
+string_margin_top = 4; // [0:0.5:10]
+// 4. Z-axis margin to keep strings away from the bottom face.
+string_margin_bottom = 4; // [0:0.5:10]
 // 4. Shifts the convergence point of all strings up or down.
 convergence_y_offset = 0; 
 // 5. Offset the angle of every other row for a woven look.
