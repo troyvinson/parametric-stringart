@@ -6,67 +6,67 @@
 //
 //You shall not share, sub-license, sell, rent, host, transfer, or distribute in any way the digital or 3D printed versions of this object, nor any other derivative work of this object in its digital or physical format (including - but not limited to - remixes of this object, and hosting on other digital platforms). The objects may not be used without permission in any way whatsoever in which you charge money, or collect fees.
 
-/* [Star Frame Settings] */
-// 1. The total outer diameter of the star.
-frame_width = 180; // min:100
-// 2. How many points the star has.
+/* [Star Frame] */
+// Outer point-to-point diameter of the star.
+frame_width = 180; // [100:1:400]
+// Number of points on the star.
 star_points = 5; // [5:1:8]
-// 3. How deep the valleys of the star go (0.2 = very pointy, 0.8 = almost a circle).
+// Depth of the valleys between points (0.2 = very pointy, 0.8 = almost circular).
 inner_radius_ratio = 0.4; // [0.1:0.05:0.9]
-// 4. The thickness of the model (Z-axis).
-frame_depth = 30; // 
-// 5. The thickness of the frame wall.
-frame_thickness = 8;
-// 6. Corner rounding.
+// Overall thickness of the model (Z height).
+frame_depth = 30; // [10:1:80]
+// Thickness of the frame wall.
+frame_thickness = 8; // [3:0.5:40]
+// Rounding on the outer tips.
 outer_corner_radius = 2; // [0:1:20]
-// 7. Interior valley rounding.
+// Rounding on the inner valleys.
 inner_corner_radius = 1; // [0:1:20]
-// 8. Color
+// Frame color.
 frame_color = "#CCCCCC"; // color
 
 /* [Center Object] */
-// 1. Upload your custom SVG artwork.
+// Your SVG artwork file.
 svg_file = "default.svg";
-// 2. Adjust scale to fit inside the frame (preserves aspect ratio).
-object_scale_percent = 100; // [1:1:500]
-// 3. Fine-tune positioning if the auto-center needs a slight nudge on the X-axis.
-object_offset_x = 0; // [-50:0.5:50]
-// 4. Fine-tune positioning if the auto-center needs a slight nudge on the Y-axis.
-object_offset_y = 0; // [-50:0.5:50]
-// 5. Color of the central SVG object
-object_color = "#CCCCCC"; // color
+// Scale the artwork to fit the frame opening.
+content_scale = 100; // [1:1:500]
+// Nudge the artwork left or right.
+content_offset_x = 0; // [-50:0.5:50]
+// Nudge the artwork up or down.
+content_offset_y = 0; // [-50:0.5:50]
+// Color of the SVG artwork.
+svg_color = "#CCCCCC"; // color
 
-/* [String (Ray) Settings] */
-// 1. Number of strings wrapping around one full revolution.
-strings_per_row = 28;
-// 2. Number of vertical layers of strings.
-string_rows = 5;
-// 3. Z-axis margin to keep strings away from the top face.
+/* [Strings] */
+// Total number of strings per revolution.
+string_count = 28; // [4:1:120]
+// Number of depth layers the strings are spread across.
+string_layers = 5; // [1:1:20]
+// Gap between strings and the top face of the frame.
 string_margin_top = 4; // [0:0.5:10]
-// 4. Z-axis margin to keep strings away from the bottom face.
+// Gap between strings and the bottom face of the frame.
 string_margin_bottom = 4; // [0:0.5:10]
-// 4. Shifts the convergence point of all strings up or down.
-convergence_y_offset = 0; 
-// 5. Offset the angle of every other row for a woven look.
-alternate_rotation = true; // [true:false]
-// 6. Color of the strings/rays
+// Moves the string convergence point up or down.
+string_center_y = 0; // [-50:0.5:50]
+// Rotate alternating layers for a woven appearance.
+string_weave = true; // [true:false]
+// Color of the strings.
 string_color = "#CCCCCC"; // color
 
-/* [Center Void (Experimental)] */
-// 1. Removes the chaotic center convergence point. Recommended if your SVG is a hollow ring.
+/* [Center Void] */
+// Cuts out a void at the string convergence center. Useful for hollow SVG artwork.
 void_shape = "None"; // [None, Ellipse, Rectangle, Hexagon, Heart]
-// 2. Width of the center string cut. Make this slightly smaller than the inner hole of your SVG.
+// Width of the void cutout.
 void_width = 20; // [1:0.5:200]
-// 3. Height of the center string cut (Only applies to Ellipse, Rectangle, and Heart).
+// Height of the void cutout (applies to Ellipse, Rectangle, and Heart only).
 void_height = 20; // [1:0.5:200]
 
 /* [Hidden] */
-$fn = 120; 
-string_embed_percent = 50; 
-string_clearance = 0.1; 
-string_width = 0.61; 
+$fn = 120;
+string_embed_percent = 50;
+string_clearance = 0.1;
+string_width = 0.61;
 string_height = 0.41;
-frame_height = frame_width; // Stars are roughly circular in bounds
+frame_height = frame_width;
 
 center_mode = "svg";
 
@@ -84,7 +84,7 @@ module star_polygon(d, points, ratio) {
     r_inner = r_outer * ratio;
     count = points * 2;
     step = 360 / count;
-    
+
     points_list = [
         for (i = [0 : count - 1])
             let (r = (i % 2 == 0) ? r_outer : r_inner)
@@ -103,7 +103,7 @@ module outer_profile() {
         offset(r=safe_r) offset(r=-safe_r) raw_outer_profile();
     } else {
         raw_outer_profile();
-    } 
+    }
 }
 
 module inner_profile() {
@@ -115,7 +115,7 @@ module inner_profile() {
         offset(r=safe_r) offset(r=-safe_r) raw_inner_profile();
     } else {
         raw_inner_profile();
-    } 
+    }
 }
 
 
