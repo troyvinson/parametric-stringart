@@ -140,7 +140,7 @@ module center_shape_solid() {
     _post_x = ((text_prefix == "" && text_string == "") ? 0 :  (_half_w + text_size * 0.6)) + emoji_suffix_x;
 
     _main_font  = str(font, (font_style == "" ? "" : str(":style=", font_style)));
-    _emoji_font = "Noto Emoji";
+    _emoji_font = str("Noto Emoji", (emoji_style == "" ? "" : str(":style=", emoji_style)));
 
     // 2D outline shape for a single text segment placed at x_pos
     module _text_2d(the_text, the_font, x_pos, the_size) {

@@ -17,54 +17,56 @@ frame_thickness = 10;
 frame_color = "#CCCCCC"; // color
 
 /* [Text Settings] */
-// 1. Emoji(s) to display before the text (optional, uses Noto Emoji font)
+// Emoji(s) to display before the text (optional, uses Noto Emoji font)
 text_prefix = "";
-// 2. X position adjustment for the prefix emoji (negative moves left)
+// X position adjustment for the prefix emoji (negative moves left)
 emoji_prefix_x = 0; // [-50:0.5:50]
-// 3. Size of the emoji characters
+// Size of the emoji characters
 emoji_size = 20; // [5:1:100]
-// 4. Main text to display
+// Style of the emoji characters
+emoji_style = "Regular"; // [Light,Regular,Medium,SemiBold,Bold]
+// Main text to display
 text_string = "Test";
-// 5. Emoji(s) to display after the text (optional, uses Noto Emoji font)
+// Emoji(s) to display after the text (optional, uses Noto Emoji font)
 text_suffix = "";
-// 6. X position adjustment for the suffix emoji (positive moves right)
+// X position adjustment for the suffix emoji (positive moves right)
 emoji_suffix_x = 0; // [-50:0.5:50]
-// 2. Select font to use
+// Select font to use
 font = "Roboto"; //[Aclonica, Acme, Agbalumo, Aladin, Alkatra,Amaranth,Artifika,Bagel Fat One,Bree Serif,Cabin,Cal Sans,Caprasimo,Carter One,Chewy,Chicle,Comic Relief,Concert One,Creepster,Dangrek,Gabriela,Galada,Goblin One,Imprima,Irish Grover,Itim,Jolly Lodger,Lemon,Lilita One,Lobster,Lobster Two,Lora,Merriweather Sans,Montserrat,Moul,Noto Emoji,Orelega One,Pacifico,Paprika,Quando,Radio Canada,REM,Righteous,Risque,Roboto,Roboto Condensed,Roboto Flex,Roboto Mono,Roboto Serif,Roboto Slab,Rum Raisin,Salsa,Seymour One,Slackey,Sniglet,Spicy Rice,Sriracha,Suez One,Telex,Tilt Neon,Tilt Warp,Titan One,Ubuntu,Ubuntu Sans,Ultra,Wendy One,Young Serif]
-// 3. Not all styles work with all fonts
+// Not all styles work with all fonts
 font_style = "Regular"; //  [Regular,Bold,Medium,SemiBold,Light,ExtraBold,Black,ExtraLight,Thin,Bold Italic,Italic,Light Italic,Medium Italic]
-// 4. Size of the text
+// Size of the text
 text_size = 20; // [5:1:100]
-// 5. Letter spacing
+// Letter spacing
 text_spacing = 1; // [0.1:0.1:5]
-// 6. Width of the solid outline around the text
+// Width of the solid outline around the text
 text_outline_width = 3; // [0:0.5:20]
-// 7. Height the text protrudes above the outline (use negative for debossing)
+// Height the text protrudes above the outline (use negative for debossing)
 text_emboss_height = 2; // [-10:0.5:20]
-// 8. Adjust scale to fit inside the frame (preserves aspect ratio)
+// Adjust scale to fit inside the frame (preserves aspect ratio)
 object_scale_percent = 100; // [1:1:500]
-// 10. Fine-tune positioning if the auto-center needs a slight nudge on the X-axis
+// Fine-tune positioning on the X-axis
 object_offset_x = 0; // [-50:0.5:50]
-// 10. Fine-tune positioning if the auto-center needs a slight nudge on the Y-axis
+// Fine-tune positioning on the Y-axis
 object_offset_y = 0; // [-50:0.5:50]
-// 11. Color of the text outline base
+// Color of the text outline base
 text_outline_color = "#FFFFFF"; // color
-// 12. Color of the embossed/debossed text
+// Color of the embossed/debossed text
 text_color = "#FF0000"; // color
 /* [String (Ray) Settings] */
-// 1. Number of strings wrapping around one full revolution.
+// Number of strings wrapping around one full revolution.
 strings_per_row = 28;
-// 2. Number of vertical layers of strings.
+// Number of vertical layers of strings.
 string_rows = 5;
-// 3. Z-axis margin to keep strings away from the top face.
+// Z-axis margin to keep strings away from the top face.
 string_margin_top = 4; // [0:0.5:10]
-// 4. Z-axis margin to keep strings away from the bottom face.
+// Z-axis margin to keep strings away from the bottom face.
 string_margin_bottom = 4; // [0:0.5:10]
-// 4. Shifts the convergence point of all strings up or down.
+// Shifts the convergence point of all strings up or down.
 convergence_y_offset = 0;
-// 5. Offset the angle of every other row for a woven look.
+// Offset the angle of every other row for a woven look.
 alternate_rotation = true; // [true:false]
-// 6. Color of the strings/rays
+// Color of the strings/rays
 string_color = "#CCCCCC"; // color
 
 /* [Hidden] */
