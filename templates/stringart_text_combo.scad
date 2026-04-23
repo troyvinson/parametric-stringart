@@ -6,13 +6,19 @@
 //
 //You shall not share, sub-license, sell, rent, host, transfer, or distribute in any way the digital or 3D printed versions of this object, nor any other derivative work of this object in its digital or physical format (including - but not limited to - remixes of this object, and hosting on other digital platforms). The objects may not be used without permission in any way whatsoever in which you charge money, or collect fees.
 
-/* [Halo Frame] */
-// Gap between the text glyphs and the inner frame wall.
+/* [Frame] */
+// Shape of the frame.
+frame_shape = "Halo"; // [Halo, Rectangle, Ellipse]
+// Gap between the text and the inner frame wall. Also determines the frame size.
 halo_offset = 15; // [5:1:50]
 // Overall thickness of the model (Z height).
 frame_depth = 30; // [10:1:80]
 // Thickness of the frame wall.
 frame_thickness = 10; // [3:0.5:40]
+// Rounding on the outer corners (Rectangle and Ellipse only).
+outer_corner_radius = 5; // [0:1:30]
+// Rounding on the inner corners (Rectangle and Ellipse only).
+inner_corner_radius = 5; // [0:1:30]
 // Frame color.
 frame_color = "#000000"; // color
 
@@ -47,8 +53,12 @@ content_spacing = 1; // [0.1:0.1:5]
 content_halo_size = 3; // [0:0.5:20]
 // How far the text rises above the halo (negative = debossed into the halo).
 content_relief = 2; // [-10:0.5:20]
-// Scale the entire text group to fit the frame opening.
+// Scale the entire text group.
 content_scale = 100; // [1:1:500]
+// Nudge the text left or right.
+content_offset_x = 0; // [-50:0.5:50]
+// Nudge the text up or down.
+content_offset_y = 0; // [-50:0.5:50]
 // Color of the halo/outline base.
 content_halo_color = "#FFFFFF"; // color
 // Color of the embossed or debossed text.
@@ -76,36 +86,40 @@ string_embed_percent = 50;
 string_clearance = 0.1;
 string_width = 0.61;
 string_height = 0.41;
-content_offset_x = 0;
-content_offset_y = 0;
 
-// Derived frame bounds — used by core_engine for string ray length.
-// Estimated conservatively from text metrics + halo + wall.
-_main_font_full = str(text_font, (text_font_style == "" ? "" : str(":style=", text_font_style)));
+center_mode = "text";
+void_shape  = "None";
+
+// Estimated text metrics — used for frame sizing and stand positioning.
+_main_font_full  = str(text_font, (text_font_style == "" ? "" : str(":style=", text_font_style)));
 _emoji_font_full = str("Noto Emoji", (emoji_font_style == "" ? "" : str(":style=", emoji_font_style)));
-_half_w_est = (text_string == "") ? 0
-            : (len(text_string) * text_font_size * content_spacing * 0.6) / 2;
-_pre_x_est  = ((text_string == "" && text_suffix == "") ? 0 : -(_half_w_est + text_font_size * 0.6)) + emoji_prefix_x;
-_post_x_est = ((text_prefix == "" && text_string == "") ? 0 :  (_half_w_est + text_font_size * 0.6)) + emoji_suffix_x;
+_half_w_est  = (text_string == "") ? 0
+             : (len(text_string) * text_font_size * content_spacing * 0.6) / 2;
+_pre_x_est   = ((text_string == "" && text_suffix == "") ? 0 : -(_half_w_est + text_font_size * 0.6)) + emoji_prefix_x;
+_post_x_est  = ((text_prefix == "" && text_string == "") ? 0 :  (_half_w_est + text_font_size * 0.6)) + emoji_suffix_x;
 
-_text_w_est = (_half_w_est * 2) * (content_scale / 100);
-_text_h_est = text_font_size * (content_scale / 100);
+// Width = main text span only; emoji nudge offsets don't expand the frame boundary.
+_left_edge   = -_half_w_est;
+_right_edge  =  _half_w_est;
+_text_w_est  = (_right_edge - _left_edge) * (content_scale / 100);
+_text_h_est  = text_font_size * (content_scale / 100);
 
 // Scale halo and wall with content so the gap stays consistent at any content_scale.
 _scaled_halo      = halo_offset * (content_scale / 100);
 _scaled_thickness = frame_thickness * (content_scale / 100);
 
+// Frame outer dimensions — derived from text metrics + scaled halo + wall for all shapes.
 frame_width  = _text_w_est + (_scaled_halo + _scaled_thickness) * 2;
 frame_height = _text_h_est + (_scaled_halo + _scaled_thickness) * 2;
 
-center_mode = "text";
-void_shape  = "None";
+// Ellipse flat-cut y: halo_offset below the bottom of the text content.
+_ellipse_cut_y = -(_text_h_est/2 + _scaled_halo + _scaled_halo * 0.3);
 
 // --- Execution ---
 union() {
     color(frame_color) union() {
         base_frame();
-        integrated_stand();
+        if (frame_shape == "Halo") integrated_stand();
     }
     center_shape();
     color(string_color) rays();
@@ -113,8 +127,7 @@ union() {
 
 // --- Modules ---
 
-// Replicates the text glyph union used by core_engine, at the template level,
-// so outer_profile / inner_profile can offset around the actual letter shapes.
+// Text glyph union at the template level — used by Halo outer/inner profiles.
 module _frame_text_glyphs_2d() {
     scale([content_scale / 100, content_scale / 100]) {
         if (text_prefix != "")
@@ -131,19 +144,54 @@ module _frame_text_glyphs_2d() {
     }
 }
 
-module outer_profile() {
-    translate([content_offset_x, content_offset_y])
-        offset(r = _scaled_halo + _scaled_thickness)
-            _frame_text_glyphs_2d();
+// Raw outer boundary before rounding — Rectangle and Ellipse only.
+module _raw_rect() {
+    square([frame_width, frame_height], center=true);
 }
+
+module _raw_ellipse() {
+    difference() {
+        scale([frame_width/frame_height, 1]) circle(d=frame_height);
+        translate([0, _ellipse_cut_y - 500]) square([frame_width*3, 1000], center=true);
+    }
+}
+
+module outer_profile() {
+    if (frame_shape == "Halo") {
+        translate([content_offset_x, content_offset_y])
+            offset(r = _scaled_halo + _scaled_thickness)
+                _frame_text_glyphs_2d();
+    } else if (frame_shape == "Rectangle") {
+        safe_r = min(outer_corner_radius, frame_width/2.1, frame_height/2.1);
+        if (safe_r > 0) offset(r=safe_r) offset(r=-safe_r) _raw_rect();
+        else _raw_rect();
+    } else { // Ellipse
+        safe_r = min(outer_corner_radius, frame_width/2.1, frame_height/2.1);
+        if (safe_r > 0) offset(r=safe_r) offset(r=-safe_r) _raw_ellipse();
+        else _raw_ellipse();
+    }
+}
+
+module _raw_inner_rect() { offset(delta=-_scaled_thickness) _raw_rect(); }
+module _raw_inner_ellipse() { offset(delta=-_scaled_thickness) _raw_ellipse(); }
 
 module inner_profile() {
-    translate([content_offset_x, content_offset_y])
-        offset(r = _scaled_halo)
-            _frame_text_glyphs_2d();
+    if (frame_shape == "Halo") {
+        translate([content_offset_x, content_offset_y])
+            offset(r = _scaled_halo)
+                _frame_text_glyphs_2d();
+    } else if (frame_shape == "Rectangle") {
+        safe_r = min(inner_corner_radius, (frame_width-frame_thickness)/2.1, (frame_height-frame_thickness)/2.1);
+        if (safe_r > 0) offset(r=safe_r) offset(r=-safe_r) _raw_inner_rect();
+        else _raw_inner_rect();
+    } else { // Ellipse
+        safe_r = min(inner_corner_radius, (frame_width-frame_thickness)/2.1, (frame_height-frame_thickness)/2.1);
+        if (safe_r > 0) offset(r=safe_r) offset(r=-safe_r) _raw_inner_ellipse();
+        else _raw_inner_ellipse();
+    }
 }
 
-// Flat base stand so the halo frame can stand upright on a desk.
+// Stand for Halo frame only.
 module integrated_stand() {
     bottom_y = (content_offset_y - _text_h_est / 2) - (_scaled_halo + _scaled_thickness);
     stand_w  = (_text_w_est * 0.6) + _scaled_halo;
