@@ -143,26 +143,26 @@ module center_shape_solid() {
     _emoji_font = "Noto Emoji";
 
     // 2D outline shape for a single text segment placed at x_pos
-    module _text_2d(the_text, the_font, x_pos) {
+    module _text_2d(the_text, the_font, x_pos, the_size) {
         translate([x_pos, 0])
-            text(the_text, size=text_size, font=the_font,
+            text(the_text, size=the_size, font=the_font,
                  halign="center", valign="center", spacing=text_spacing);
     }
 
     // Union of all three text segments as a 2D shape (for outline base extrusion)
     module _all_text_2d_outlined() {
         offset(r=text_outline_width) {
-            if (text_prefix != "") _text_2d(text_prefix,  _emoji_font, _pre_x);
-            if (text_string != "") _text_2d(text_string,    _main_font,  0);
-            if (text_suffix != "") _text_2d(text_suffix, _emoji_font, _post_x);
+            if (text_prefix != "") _text_2d(text_prefix, _emoji_font, _pre_x,  emoji_size);
+            if (text_string != "") _text_2d(text_string, _main_font,  0,        text_size);
+            if (text_suffix != "") _text_2d(text_suffix, _emoji_font, _post_x,  emoji_size);
         }
     }
 
     // Union of all three text segments as a 2D shape (raw, for emboss/deboss cutting)
     module _all_text_2d_raw() {
-        if (text_prefix != "") _text_2d(text_prefix,  _emoji_font, _pre_x);
-        if (text_string != "") _text_2d(text_string,    _main_font,  0);
-        if (text_suffix != "") _text_2d(text_suffix, _emoji_font, _post_x);
+        if (text_prefix != "") _text_2d(text_prefix, _emoji_font, _pre_x,  emoji_size);
+        if (text_string != "") _text_2d(text_string, _main_font,  0,        text_size);
+        if (text_suffix != "") _text_2d(text_suffix, _emoji_font, _post_x,  emoji_size);
     }
 
     translate([object_offset_x, object_offset_y, 0]) {
