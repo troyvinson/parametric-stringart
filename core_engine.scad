@@ -176,35 +176,47 @@ module center_shape_solid() {
         if (is_text_mode) {
             scale([scale_factor, scale_factor]) {
                 if (text_emboss_height > 0) {
-                    // Emboss (positive) — raised text sits above the top face
+                    // Emboss (positive) — cavity cut in outline, colored text raised above
                     union() {
-                        // Outline Base (solid)
+                        // Outline Base with text cavity so colored text shows through
                         color(text_outline_color)
-                            linear_extrude(height=frame_depth, center=true)
-                                _all_text_2d_outlined();
+                            difference() {
+                                linear_extrude(height=frame_depth, center=true)
+                                    _all_text_2d_outlined();
+                                // Cut the text footprint flush from top down 1.2mm
+                                translate([0, 0, frame_depth/2 - 1.2])
+                                    linear_extrude(height=1.2 + 1) // +1 for clean cut
+                                        _all_text_2d_raw();
+                            }
 
-                        // Raised Text
+                        // Colored text: 1.2mm cavity body + raised emboss above
                         color(text_color)
-                            translate([0, 0, frame_depth/2])
-                                linear_extrude(height=text_emboss_height)
+                            translate([0, 0, frame_depth/2 - 1.2])
+                                linear_extrude(height=1.2 + text_emboss_height)
                                     _all_text_2d_raw();
                     }
                 } else if (text_emboss_height == 0) {
-                    // Flat — 1.2mm slab downward from the top face
+                    // Flat — cavity cut in outline, colored text fills 1.2mm downward
                     union() {
-                        // Outline Base (solid)
+                        // Outline Base with text cavity so colored text shows through
                         color(text_outline_color)
-                            linear_extrude(height=frame_depth, center=true)
-                                _all_text_2d_outlined();
+                            difference() {
+                                linear_extrude(height=frame_depth, center=true)
+                                    _all_text_2d_outlined();
+                                // Cut the text footprint flush from top down 1.2mm
+                                translate([0, 0, frame_depth/2 - 1.2])
+                                    linear_extrude(height=1.2 + 1) // +1 for clean cut
+                                        _all_text_2d_raw();
+                            }
 
-                        // 1.2mm slab going downward from the top face
+                        // Colored text fills the 1.2mm cavity flush with the top face
                         color(text_color)
                             translate([0, 0, frame_depth/2 - 1.2])
                                 linear_extrude(height=1.2)
                                     _all_text_2d_raw();
                     }
                 } else {
-                    // Deboss (negative) — cavity cut + 1.2mm colored slab below cavity floor
+                    // Deboss (negative) — deep cavity cut + 1.2mm colored slab at cavity floor
                     union() {
                         difference() {
                             // Outline Base (solid)
@@ -220,7 +232,7 @@ module center_shape_solid() {
 
                         // 1.2mm colored slab extending downward from the cavity floor
                         color(text_color)
-                            translate([0, 0, frame_depth/2 + text_emboss_height - 1.2])
+                            translate([0, 0, frame_depth/2 + text_emboss_height - 1.1])
                                 linear_extrude(height=1.2)
                                     _all_text_2d_raw();
                     }
