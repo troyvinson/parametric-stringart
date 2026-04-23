@@ -138,9 +138,9 @@ module center_shape_solid() {
     _main_font  = str(text_font, (text_font_style == "" ? "" : str(":style=", text_font_style)));
     _emoji_font = str("Noto Emoji", (emoji_font_style == "" ? "" : str(":style=", emoji_font_style)));
 
-    // Render a single text segment at an x position with a given font and size.
-    module _text_2d(the_text, the_font, x_pos, the_size) {
-        translate([x_pos, 0])
+    // Render a single text segment at an (x, y) position with a given font and size.
+    module _text_2d(the_text, the_font, x_pos, y_pos, the_size) {
+        translate([x_pos, y_pos])
             text(the_text, size=the_size, font=the_font,
                  halign="center", valign="center", spacing=content_spacing);
     }
@@ -148,17 +148,17 @@ module center_shape_solid() {
     // All three segments as a 2D union with the halo offset applied (for the outline base).
     module _all_text_2d_outlined() {
         offset(r=content_halo_size) {
-            if (text_prefix != "") _text_2d(text_prefix, _emoji_font, _pre_x,  emoji_font_size);
-            if (text_string != "") _text_2d(text_string, _main_font,  0,        text_font_size);
-            if (text_suffix != "") _text_2d(text_suffix, _emoji_font, _post_x,  emoji_font_size);
+            if (text_prefix != "") _text_2d(text_prefix, _emoji_font, _pre_x,  emoji_prefix_y, emoji_font_size);
+            if (text_string != "") _text_2d(text_string, _main_font,  0,        0,              text_font_size);
+            if (text_suffix != "") _text_2d(text_suffix, _emoji_font, _post_x,  emoji_suffix_y, emoji_font_size);
         }
     }
 
     // All three segments as a raw 2D union (for cavity cutting and coloring).
     module _all_text_2d_raw() {
-        if (text_prefix != "") _text_2d(text_prefix, _emoji_font, _pre_x,  emoji_font_size);
-        if (text_string != "") _text_2d(text_string, _main_font,  0,        text_font_size);
-        if (text_suffix != "") _text_2d(text_suffix, _emoji_font, _post_x,  emoji_font_size);
+        if (text_prefix != "") _text_2d(text_prefix, _emoji_font, _pre_x,  emoji_prefix_y, emoji_font_size);
+        if (text_string != "") _text_2d(text_string, _main_font,  0,        0,              text_font_size);
+        if (text_suffix != "") _text_2d(text_suffix, _emoji_font, _post_x,  emoji_suffix_y, emoji_font_size);
     }
 
     translate([content_offset_x, content_offset_y, 0]) {

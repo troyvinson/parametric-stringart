@@ -22,29 +22,33 @@ outer_corner_radius = 2; // [0:1:20]
 // Rounding on the inner valleys.
 inner_corner_radius = 1; // [0:1:20]
 // Frame color.
-frame_color = "#CCCCCC"; // color
+frame_color = "#000000"; // color
 
 /* [Text] */
 // Emoji(s) to display before the main text (uses Noto Emoji font).
 text_prefix = "";
 // Nudge the prefix emoji left or right.
-emoji_prefix_x = 0; // [-50:0.5:50]
+emoji_prefix_x = -5; // [-50:0.5:50]
+// Nudge the prefix emoji up or down.
+emoji_prefix_y = 0; // [-50:0.5:50]
 // Size of the emoji characters.
-emoji_font_size = 20; // [5:1:100]
+emoji_font_size = 14; // [5:1:100]
 // Style of the emoji characters.
 emoji_font_style = "Regular"; // [Light,Regular,Medium,SemiBold,Bold]
 // Main text to display.
-text_string = "Test";
+text_string = "Text Here";
 // Emoji(s) to display after the main text (uses Noto Emoji font).
 text_suffix = "";
 // Nudge the suffix emoji left or right.
-emoji_suffix_x = 0; // [-50:0.5:50]
+emoji_suffix_x = 5; // [-50:0.5:50]
+// Nudge the suffix emoji up or down.
+emoji_suffix_y = 0; // [-50:0.5:50]
 // Font for the main text.
-text_font = "Roboto"; //[Aclonica, Acme, Agbalumo, Aladin, Alkatra,Amaranth,Artifika,Bagel Fat One,Bree Serif,Cabin,Cal Sans,Caprasimo,Carter One,Chewy,Chicle,Comic Relief,Concert One,Creepster,Dangrek,Gabriela,Galada,Goblin One,Imprima,Irish Grover,Itim,Jolly Lodger,Lemon,Lilita One,Lobster,Lobster Two,Lora,Merriweather Sans,Montserrat,Moul,Noto Emoji,Orelega One,Pacifico,Paprika,Quando,Radio Canada,REM,Righteous,Risque,Roboto,Roboto Condensed,Roboto Flex,Roboto Mono,Roboto Serif,Roboto Slab,Rum Raisin,Salsa,Seymour One,Slackey,Sniglet,Spicy Rice,Sriracha,Suez One,Telex,Tilt Neon,Tilt Warp,Titan One,Ubuntu,Ubuntu Sans,Ultra,Wendy One,Young Serif]
+text_font = "Lobster"; //[Aclonica, Acme, Agbalumo, Aladin, Alkatra,Amaranth,Artifika,Bagel Fat One,Bree Serif,Cabin,Cal Sans,Caprasimo,Carter One,Chewy,Chicle,Comic Relief,Concert One,Creepster,Dangrek,Gabriela,Galada,Goblin One,Imprima,Irish Grover,Itim,Jolly Lodger,Lemon,Lilita One,Lobster,Lobster Two,Lora,Merriweather Sans,Montserrat,Moul,Noto Emoji,Orelega One,Pacifico,Paprika,Quando,Radio Canada,REM,Righteous,Risque,Roboto,Roboto Condensed,Roboto Flex,Roboto Mono,Roboto Serif,Roboto Slab,Rum Raisin,Salsa,Seymour One,Slackey,Sniglet,Spicy Rice,Sriracha,Suez One,Telex,Tilt Neon,Tilt Warp,Titan One,Ubuntu,Ubuntu Sans,Ultra,Wendy One,Young Serif]
 // Style of the main text font (not all styles work with all fonts).
-text_font_style = "Regular"; // [Regular,Bold,Medium,SemiBold,Light,ExtraBold,Black,ExtraLight,Thin,Bold Italic,Italic,Light Italic,Medium Italic]
+text_font_style = "Bold"; // [Regular,Bold,Medium,SemiBold,Light,ExtraBold,Black,ExtraLight,Thin,Bold Italic,Italic,Light Italic,Medium Italic]
 // Size of the main text.
-text_font_size = 20; // [5:1:100]
+text_font_size = 18; // [5:1:100]
 // Letter spacing multiplier (affects text and emojis).
 content_spacing = 1; // [0.1:0.1:5]
 // Width of the solid halo/outline around the text and emojis.
@@ -76,7 +80,7 @@ string_center_y = 0; // [-50:0.5:50]
 // Rotate alternating layers for a woven appearance.
 string_weave = true; // [true:false]
 // Color of the strings.
-string_color = "#CCCCCC"; // color
+string_color = "#FFFFFF"; // color
 
 /* [Hidden] */
 $fn = 120;
