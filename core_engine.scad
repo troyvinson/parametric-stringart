@@ -147,7 +147,7 @@ module center_shape_solid() {
 
     // All three segments as a 2D union with the halo offset applied (for the outline base).
     module _all_text_2d_outlined() {
-        offset(r=content_halo_size) {
+        offset(r=content_outline_size) {
             if (text_prefix != "") _text_2d(text_prefix, _emoji_font, _pre_x,  emoji_prefix_y, emoji_font_size);
             if (text_string != "") _text_2d(text_string, _main_font,  0,        0,              text_font_size);
             if (text_suffix != "") _text_2d(text_suffix, _emoji_font, _post_x,  emoji_suffix_y, emoji_font_size);
@@ -168,7 +168,7 @@ module center_shape_solid() {
                     // Emboss — halo base has a 1.2mm cavity so the colored text shows through,
                     // then the text continues to rise content_relief mm above the top face.
                     union() {
-                        color(content_halo_color)
+                        color(content_outline_color)
                             difference() {
                                 linear_extrude(height=frame_depth, center=true)
                                     _all_text_2d_outlined();
@@ -185,7 +185,7 @@ module center_shape_solid() {
                 } else if (content_relief == 0) {
                     // Flat — halo base has a 1.2mm cavity filled flush with content_color.
                     union() {
-                        color(content_halo_color)
+                        color(content_outline_color)
                             difference() {
                                 linear_extrude(height=frame_depth, center=true)
                                     _all_text_2d_outlined();
@@ -204,7 +204,7 @@ module center_shape_solid() {
                     // with a 1.2mm colored slab sitting at the cavity floor.
                     union() {
                         difference() {
-                            color(content_halo_color)
+                            color(content_outline_color)
                                 linear_extrude(height=frame_depth, center=true)
                                     _all_text_2d_outlined();
 

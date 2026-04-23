@@ -10,7 +10,7 @@
 // Shape of the frame.
 frame_shape = "Halo"; // [Halo, Rectangle, Ellipse]
 // Gap between the text and the inner frame wall. Also determines the frame size.
-halo_offset = 15; // [5:1:50]
+outline_offset = 15; // [5:1:50]
 // Overall thickness of the model (Z height).
 frame_depth = 30; // [10:1:80]
 // Thickness of the frame wall.
@@ -50,7 +50,7 @@ text_font_size = 18; // [5:1:100]
 // Letter spacing multiplier (affects text and emojis).
 content_spacing = 1; // [0.1:0.1:5]
 // Width of the solid halo/outline around the text and emojis.
-content_halo_size = 3; // [0:0.5:20]
+content_outline_size = 3; // [0:0.5:20]
 // How far the text rises above the halo (negative = debossed into the halo).
 content_relief = 2; // [-10:0.5:20]
 // Scale the entire text group.
@@ -60,7 +60,7 @@ content_offset_x = 0; // [-50:0.5:50]
 // Nudge the text up or down.
 content_offset_y = 0; // [-50:0.5:50]
 // Color of the halo/outline base.
-content_halo_color = "#FFFFFF"; // color
+content_outline_color = "#FFFFFF"; // color
 // Color of the embossed or debossed text.
 content_color = "#FF0000"; // color
 
@@ -105,15 +105,15 @@ _text_w_est  = (_right_edge - _left_edge) * (content_scale / 100);
 _text_h_est  = text_font_size * (content_scale / 100);
 
 // Scale halo and wall with content so the gap stays consistent at any content_scale.
-_scaled_halo      = halo_offset * (content_scale / 100);
+_scaled_outline      = outline_offset * (content_scale / 100);
 _scaled_thickness = frame_thickness * (content_scale / 100);
 
 // Frame outer dimensions — derived from text metrics + scaled halo + wall for all shapes.
-frame_width  = _text_w_est + (_scaled_halo + _scaled_thickness) * 2;
-frame_height = _text_h_est + (_scaled_halo + _scaled_thickness) * 2;
+frame_width  = _text_w_est + (_scaled_outline + _scaled_thickness) * 2;
+frame_height = _text_h_est + (_scaled_outline + _scaled_thickness) * 2;
 
-// Ellipse flat-cut y: halo_offset below the bottom of the text content.
-_ellipse_cut_y = -(_text_h_est/2 + _scaled_halo + _scaled_halo * 0.3);
+// Ellipse flat-cut y: outline_offset below the bottom of the text content.
+_ellipse_cut_y = -(_text_h_est/2 + _scaled_outline + _scaled_outline * 0.3);
 
 // --- Execution ---
 union() {
@@ -159,7 +159,7 @@ module _raw_ellipse() {
 module outer_profile() {
     if (frame_shape == "Halo") {
         translate([content_offset_x, content_offset_y])
-            offset(r = _scaled_halo + _scaled_thickness)
+            offset(r = _scaled_outline + _scaled_thickness)
                 _frame_text_glyphs_2d();
     } else if (frame_shape == "Rectangle") {
         safe_r = min(outer_corner_radius, frame_width/2.1, frame_height/2.1);
@@ -178,7 +178,7 @@ module _raw_inner_ellipse() { offset(delta=-_scaled_thickness) _raw_ellipse(); }
 module inner_profile() {
     if (frame_shape == "Halo") {
         translate([content_offset_x, content_offset_y])
-            offset(r = _scaled_halo)
+            offset(r = _scaled_outline)
                 _frame_text_glyphs_2d();
     } else if (frame_shape == "Rectangle") {
         safe_r = min(inner_corner_radius, (frame_width-frame_thickness)/2.1, (frame_height-frame_thickness)/2.1);
@@ -193,8 +193,8 @@ module inner_profile() {
 
 // Stand for Halo frame only.
 module integrated_stand() {
-    bottom_y = (content_offset_y - _text_h_est / 2) - (_scaled_halo + _scaled_thickness);
-    stand_w  = (_text_w_est * 0.6) + _scaled_halo;
+    bottom_y = (content_offset_y - _text_h_est / 2) - (_scaled_outline + _scaled_thickness);
+    stand_w  = (_text_w_est * 0.6) + _scaled_outline;
     stand_h  = 14 * (content_scale / 100);
     overlap  = 5  * (content_scale / 100);
     corner_r = 2;

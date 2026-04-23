@@ -48,7 +48,7 @@ text_font_size = 16; // [5:1:100]
 // Letter spacing multiplier (affects text and emojis).
 content_spacing = 1; // [0.1:0.1:5]
 // Width of the solid halo/outline around the text and emojis.
-content_halo_size = 3; // [0:0.5:20]
+content_outline_size = 3; // [0:0.5:20]
 // How far the text rises above the halo (negative = debossed into the halo).
 content_relief = 2; // [-10:0.5:20]
 // Scale the entire text group to fit the frame opening.
@@ -58,7 +58,7 @@ content_offset_x = 0; // [-50:0.5:50]
 // Nudge the text up or down.
 content_offset_y = -5; // [-50:0.5:50]
 // Color of the halo/outline base.
-content_halo_color = "#FFFFFF"; // color
+content_outline_color = "#FFFFFF"; // color
 // Color of the embossed or debossed text.
 content_color = "#FF0000"; // color
 
