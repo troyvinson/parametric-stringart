@@ -23,10 +23,14 @@ frame_color = "#CCCCCC"; // color
 /* [Text Settings] */
 // 1. Emoji(s) to display before the text (optional, uses Noto Emoji font)
 text_prefix = "";
-// 2. Main text to display
+// 2. X position adjustment for the prefix emoji (negative moves left)
+emoji_prefix_x = 0; // [-50:0.5:50]
+// 3. Main text to display
 text_string = "Test";
-// 3. Emoji(s) to display after the text (optional, uses Noto Emoji font)
+// 4. Emoji(s) to display after the text (optional, uses Noto Emoji font)
 text_suffix = "";
+// 5. X position adjustment for the suffix emoji (positive moves right)
+emoji_suffix_x = 0; // [-50:0.5:50]
 // 2. Select font to use
 font = "Roboto"; //[Aclonica, Acme, Agbalumo, Aladin, Alkatra,Amaranth,Artifika,Bagel Fat One,Bree Serif,Cabin,Cal Sans,Caprasimo,Carter One,Chewy,Chicle,Comic Relief,Concert One,Creepster,Dangrek,Gabriela,Galada,Goblin One,Imprima,Irish Grover,Itim,Jolly Lodger,Lemon,Lilita One,Lobster,Lobster Two,Lora,Merriweather Sans,Montserrat,Moul,Noto Emoji,Orelega One,Pacifico,Paprika,Quando,Radio Canada,REM,Righteous,Risque,Roboto,Roboto Condensed,Roboto Flex,Roboto Mono,Roboto Serif,Roboto Slab,Rum Raisin,Salsa,Seymour One,Slackey,Sniglet,Spicy Rice,Sriracha,Suez One,Telex,Tilt Neon,Tilt Warp,Titan One,Ubuntu,Ubuntu Sans,Ultra,Wendy One,Young Serif]
 // 3. Not all styles work with all fonts

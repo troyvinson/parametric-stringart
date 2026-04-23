@@ -136,8 +136,8 @@ module center_shape_solid() {
     // When text_string is empty, emojis are centered at x=0.
     _half_w = (text_string == "") ? 0
             : (len(text_string) * text_size * text_spacing * 0.6) / 2;
-    _pre_x  = (text_string == "" && text_suffix == "") ? 0 : -(_half_w + text_size * 0.6);
-    _post_x = (text_prefix == "" && text_string == "") ? 0 :  (_half_w + text_size * 0.6);
+    _pre_x  = ((text_string == "" && text_suffix == "") ? 0 : -(_half_w + text_size * 0.6)) + emoji_prefix_x;
+    _post_x = ((text_prefix == "" && text_string == "") ? 0 :  (_half_w + text_size * 0.6)) + emoji_suffix_x;
 
     _main_font  = str(font, (font_style == "" ? "" : str(":style=", font_style)));
     _emoji_font = "Noto Emoji";
@@ -149,62 +149,67 @@ module center_shape_solid() {
                  halign="center", valign="center", spacing=text_spacing);
     }
 
-    // Rendered strings: add trailing space to prefix when something follows,
-    // and leading space to suffix when something precedes it.
-    _pre_has_neighbor  = (text_string != "" || text_suffix != "");
-    _post_has_neighbor = (text_string != "" || text_prefix != "");
-    _pre_rendered  = (text_prefix != "" && _pre_has_neighbor)  ? str(text_prefix, " ") : text_prefix;
-    _post_rendered = (text_suffix != "" && _post_has_neighbor) ? str(" ", text_suffix)  : text_suffix;
-
     // Union of all three text segments as a 2D shape (for outline base extrusion)
     module _all_text_2d_outlined() {
         offset(r=text_outline_width) {
-            if (text_prefix != "") _text_2d(_pre_rendered,  _emoji_font, _pre_x);
+            if (text_prefix != "") _text_2d(text_prefix,  _emoji_font, _pre_x);
             if (text_string != "") _text_2d(text_string,    _main_font,  0);
-            if (text_suffix != "") _text_2d(_post_rendered, _emoji_font, _post_x);
+            if (text_suffix != "") _text_2d(text_suffix, _emoji_font, _post_x);
         }
     }
 
     // Union of all three text segments as a 2D shape (raw, for emboss/deboss cutting)
     module _all_text_2d_raw() {
-        if (text_prefix != "") _text_2d(_pre_rendered,  _emoji_font, _pre_x);
+        if (text_prefix != "") _text_2d(text_prefix,  _emoji_font, _pre_x);
         if (text_string != "") _text_2d(text_string,    _main_font,  0);
-        if (text_suffix != "") _text_2d(_post_rendered, _emoji_font, _post_x);
+        if (text_suffix != "") _text_2d(text_suffix, _emoji_font, _post_x);
     }
 
     translate([object_offset_x, object_offset_y, 0]) {
         if (is_text_mode) {
             scale([scale_factor, scale_factor]) {
                 if (text_emboss_height > 0) {
-                    // Emboss (positive) — raised text sits above the top face
+                    // Emboss (positive) — cavity cut in outline, colored text raised above
                     union() {
-                        // Outline Base (solid)
+                        // Outline Base with text cavity so colored text shows through
                         color(text_outline_color)
-                            linear_extrude(height=frame_depth, center=true)
-                                _all_text_2d_outlined();
+                            difference() {
+                                linear_extrude(height=frame_depth, center=true)
+                                    _all_text_2d_outlined();
+                                // Cut the text footprint flush from top down 1.2mm
+                                translate([0, 0, frame_depth/2 - 1.2])
+                                    linear_extrude(height=1.2 + 1) // +1 for clean cut
+                                        _all_text_2d_raw();
+                            }
 
-                        // Raised Text
+                        // Colored text: 1.2mm cavity body + raised emboss above
                         color(text_color)
-                            translate([0, 0, frame_depth/2])
-                                linear_extrude(height=text_emboss_height)
+                            translate([0, 0, frame_depth/2 - 1.2])
+                                linear_extrude(height=1.2 + text_emboss_height)
                                     _all_text_2d_raw();
                     }
                 } else if (text_emboss_height == 0) {
-                    // Flat — 1.2mm slab downward from the top face
+                    // Flat — cavity cut in outline, colored text fills 1.2mm downward
                     union() {
-                        // Outline Base (solid)
+                        // Outline Base with text cavity so colored text shows through
                         color(text_outline_color)
-                            linear_extrude(height=frame_depth, center=true)
-                                _all_text_2d_outlined();
+                            difference() {
+                                linear_extrude(height=frame_depth, center=true)
+                                    _all_text_2d_outlined();
+                                // Cut the text footprint flush from top down 1.2mm
+                                translate([0, 0, frame_depth/2 - 1.2])
+                                    linear_extrude(height=1.2 + 1) // +1 for clean cut
+                                        _all_text_2d_raw();
+                            }
 
-                        // 1.2mm slab going downward from the top face
+                        // Colored text fills the 1.2mm cavity flush with the top face
                         color(text_color)
                             translate([0, 0, frame_depth/2 - 1.2])
                                 linear_extrude(height=1.2)
                                     _all_text_2d_raw();
                     }
                 } else {
-                    // Deboss (negative) — cavity cut + 1.2mm colored slab below cavity floor
+                    // Deboss (negative) — deep cavity cut + 1.2mm colored slab at cavity floor
                     union() {
                         difference() {
                             // Outline Base (solid)
@@ -213,7 +218,7 @@ module center_shape_solid() {
                                     _all_text_2d_outlined();
 
                             // Subtracted Text cavity
-                            translate([0, 0, frame_depth/2 + text_emboss_height])
+                            translate([0, 0, frame_depth/2 + text_emboss_height - .1])
                                 linear_extrude(height=abs(text_emboss_height) + 1) // +1 for clean cut
                                     _all_text_2d_raw();
                         }
