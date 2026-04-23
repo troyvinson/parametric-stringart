@@ -52,7 +52,7 @@ content_scale = 100; // [1:1:500]
 // Nudge the text left or right.
 content_offset_x = 0; // [-50:0.5:50]
 // Nudge the text up or down.
-content_offset_y = 0; // [-50:0.5:50]
+content_offset_y = 15; // [-50:0.5:50]
 // Color of the halo/outline base.
 content_halo_color = "#FFFFFF"; // color
 // Color of the embossed or debossed text.
@@ -60,15 +60,15 @@ content_color = "#FF0000"; // color
 
 /* [Strings] */
 // Total number of strings per revolution.
-string_count = 28; // [4:1:120]
+string_count = 22; // [4:1:120]
 // Number of depth layers the strings are spread across.
-string_layers = 5; // [1:1:20]
+string_layers = 4; // [1:1:20]
 // Gap between strings and the top face of the frame.
-string_margin_top = 4; // [0:0.5:10]
+string_margin_top = 7.5; // [0:0.5:10]
 // Gap between strings and the bottom face of the frame.
-string_margin_bottom = 4; // [0:0.5:10]
+string_margin_bottom = 7.5; // [0:0.5:10]
 // Moves the string convergence point up or down.
-string_center_y = 0; // [-50:0.5:50]
+string_center_y = 15; // [-50:0.5:50]
 // Rotate alternating layers for a woven appearance.
 string_weave = true; // [true:false]
 // Color of the strings.

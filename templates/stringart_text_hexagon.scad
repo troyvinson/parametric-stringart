@@ -28,7 +28,7 @@ emoji_prefix_x = -5; // [-50:0.5:50]
 // Nudge the prefix emoji up or down.
 emoji_prefix_y = 0; // [-50:0.5:50]
 // Size of the emoji characters.
-emoji_font_size = 14; // [5:1:100]
+emoji_font_size = 13; // [5:1:100]
 // Style of the emoji characters.
 emoji_font_style = "Regular"; // [Light,Regular,Medium,SemiBold,Bold]
 // Main text to display.
@@ -44,7 +44,7 @@ text_font = "Lobster"; //[Aclonica, Acme, Agbalumo, Aladin, Alkatra,Amaranth,Art
 // Style of the main text font (not all styles work with all fonts).
 text_font_style = "Bold"; // [Regular,Bold,Medium,SemiBold,Light,ExtraBold,Black,ExtraLight,Thin,Bold Italic,Italic,Light Italic,Medium Italic]
 // Size of the main text.
-text_font_size = 18; // [5:1:100]
+text_font_size = 16; // [5:1:100]
 // Letter spacing multiplier (affects text and emojis).
 content_spacing = 1; // [0.1:0.1:5]
 // Width of the solid halo/outline around the text and emojis.
@@ -64,13 +64,13 @@ content_color = "#FF0000"; // color
 
 /* [Strings] */
 // Total number of strings per revolution.
-string_count = 28; // [4:1:120]
+string_count = 22; // [4:1:120]
 // Number of depth layers the strings are spread across.
-string_layers = 5; // [1:1:20]
+string_layers = 4; // [1:1:20]
 // Gap between strings and the top face of the frame.
-string_margin_top = 4; // [0:0.5:10]
+string_margin_top = 7.5; // [0:0.5:10]
 // Gap between strings and the bottom face of the frame.
-string_margin_bottom = 4; // [0:0.5:10]
+string_margin_bottom = 7.5; // [0:0.5:10]
 // Moves the string convergence point up or down.
 string_center_y = 0; // [-50:0.5:50]
 // Rotate alternating layers for a woven appearance.
